@@ -141,6 +141,9 @@ from .tokens import generate_token
 def home(request):
     return render(request, "authentication/index.html")
 
+def demo(request):
+    return render(request, "fe/test.html")
+
 def signup(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -198,29 +201,6 @@ def activate(request, uidb64, token):
         return redirect('signin')
     else:
         return render(request, 'activation_failed.html')
-
-
-# def signin(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         pass1 = request.POST['pass1']
-        
-#         user = authenticate(request, username=username, password=pass1)
-        
-#         if user is not None:
-#             if user.is_active:
-#                 login(request, user)
-#                 fname = user.first_name
-#                 messages.success(request, "Logged In Successfully!!")
-#                 return redirect('home')
-#             else:
-#                 messages.error(request, "Your account is not active. Please contact admin.")
-#                 return redirect('signin')
-#         else:
-#             messages.error(request, "Bad Credentials!!")
-#             return redirect('signin')
-    
-#     return render(request, "authentication/signin.html")
 
 def signin(request):
     if request.method == 'POST':
