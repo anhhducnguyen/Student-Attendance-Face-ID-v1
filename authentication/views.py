@@ -127,8 +127,6 @@
 #     messages.success(request, "Logged Out Successfully!!")
 #     return redirect('home')
 
-
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -137,12 +135,44 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_str, force_bytes
 from django.contrib.auth import authenticate, login, logout
 from .tokens import generate_token
+import subprocess
+from django.shortcuts import render
+from django.http import HttpResponse
+import cv2
 
 def home(request):
     return render(request, "authentication/index.html")
 
 def demo(request):
     return render(request, "fe/test.html")
+
+def run_cap_picture(request):
+    # Mở camera
+    cap = cv2.VideoCapture(0)
+    
+    # Kiểm tra xem camera có hoạt động không
+    if not cap.isOpened():
+        return HttpResponse("Failed to open camera.")
+
+    while True:
+        # Đọc frame từ camera
+        ret, frame = cap.read()
+        
+        # Hiển thị frame
+        cv2.imshow('Captured Image', frame)
+        
+        # Chờ một khoảng thời gian ngắn và lấy phím được nhấn
+        key = cv2.waitKey(1) & 0xFF
+
+        # Kiểm tra xem phím "q" đã được nhấn chưa
+        if key == ord('q'):
+            break
+
+    # Sau khi thoát khỏi vòng lặp, đóng camera
+    cap.release()
+    cv2.destroyAllWindows()
+
+    return HttpResponse("Camera stopped successfully.")
 
 def signup(request):
     if request.method == "POST":
@@ -251,6 +281,12 @@ def signout(request):
 
 # Cài đặt mysql
 # pip install mysql
+
+# Cài đặt dlib
+# https://github.com/z-mahmud22/Dlib_Windows_Python3.x
+
+# Bản 3.12
+# python -m pip install dlib-19.24.99-cp312-cp312-win_amd64.whl
 
 
 
