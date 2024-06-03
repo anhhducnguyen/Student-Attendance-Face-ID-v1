@@ -1,132 +1,3 @@
-# from django.shortcuts import render, redirect
-# from django.http import HttpResponse
-# from django.contrib.auth.models import User
-# from django.contrib import messages
-# from django.core.mail import EmailMessage, send_mail
-# from geeksforgeeks import settings
-# from django.contrib.sites.shortcuts import get_current_site
-# from django.template.loader import render_to_string
-# from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-# from django.utils.encoding import force_str, force_bytes
-# from django.contrib.auth import authenticate, login, logout
-# from .tokens import generate_token
-
-# # Create your views here.
-# def home(request):
-#     return render(request, "authentication/index.html")
-
-# def signup(request):
-#     if request.method == "POST":
-#         username = request.POST['username']
-#         fname = request.POST['fname']
-#         lname = request.POST['lname']
-#         email = request.POST['email']
-#         pass1 = request.POST['pass1']
-#         pass2 = request.POST['pass2']
-        
-#         if User.objects.filter(username=username):
-#             messages.error(request, "Username already exist! Please try some other username.")
-#             return redirect('home')
-        
-#         if User.objects.filter(email=email).exists():
-#             messages.error(request, "Email Already Registered!!")
-#             return redirect('home')
-        
-#         if len(username)>20:
-#             messages.error(request, "Username must be under 20 charcters!!")
-#             return redirect('home')
-        
-#         if pass1 != pass2:
-#             messages.error(request, "Passwords didn't matched!!")
-#             return redirect('home')
-        
-#         if not username.isalnum():
-#             messages.error(request, "Username must be Alpha-Numeric!!")
-#             return redirect('home')
-        
-#         myuser = User.objects.create_user(username, email, pass1)
-#         myuser.first_name = fname
-#         myuser.last_name = lname
-#         # myuser.is_active = False
-#         myuser.is_active = False
-#         myuser.save()
-#         messages.success(request, "Your Account has been created succesfully!! Please check your email to confirm your email address in order to activate your account.")
-        
-#         # Welcome Email
-#         subject = "Welcome to GFG- Django Login!!"
-#         message = "Hello " + myuser.first_name + "!! \n" + "Welcome to GFG!! \nThank you for visiting our website\n. We have also sent you a confirmation email, please confirm your email address. \n\nThanking You\nAnubhav Madhav"        
-#         from_email = settings.EMAIL_HOST_USER
-#         to_list = [myuser.email]
-#         send_mail(subject, message, from_email, to_list, fail_silently=True)
-        
-#         # Email Address Confirmation Email
-#         current_site = get_current_site(request)
-#         email_subject = "Confirm your Email @ GFG - Django Login!!"
-#         message2 = render_to_string('email_confirmation.html',{
-            
-#             'name': myuser.first_name,
-#             'domain': current_site.domain,
-#             'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
-#             'token': generate_token.make_token(myuser)
-#         })
-#         email = EmailMessage(
-#         email_subject,
-#         message2,
-#         settings.EMAIL_HOST_USER,
-#         [myuser.email],
-#         )
-#         email.fail_silently = True
-#         email.send()
-        
-#         return redirect('signin')
-        
-        
-#     return render(request, "authentication/signup.html")
-
-
-# def activate(request, uidb64, token):
-#     try:
-#         uid = force_str(urlsafe_base64_decode(uidb64))
-#         myuser = User.objects.get(pk=uid)
-#     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-#         myuser = None
-
-#     if myuser is not None and generate_token.check_token(myuser, token):
-#         myuser.is_active = True
-#         myuser.save()
-#         login(request, myuser)
-#         messages.success(request, "Your Account has been activated!!")
-#         return redirect('signin')
-#     else:
-#         return render(request, 'activation_failed.html')
-
-
-# def signin(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         pass1 = request.POST['pass1']
-        
-#         user = authenticate(username=username, password=pass1)
-        
-#         if user is not None:
-#             login(request, user)
-#             fname = user.first_name
-#             messages.success(request, "Logged In Sucessfully!!")
-#             # return render(request, "authentication/index.html",{"fname":fname})
-#         else:
-#             messages.error(request, "Bad Credentials!!")
-#             return redirect('home')
-    
-#     return render(request, "authentication/signin.html")
-
-
-
-
-# def signout(request):
-#     logout(request)
-#     messages.success(request, "Logged Out Successfully!!")
-#     return redirect('home')
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -142,7 +13,6 @@ import cv2
 import os
 from sklearn.model_selection import train_test_split
 from mtcnn.mtcnn import MTCNN
-# from Face import capPicture
 
 def home(request):
     return render(request, "authentication/index.html")
@@ -150,86 +20,86 @@ def home(request):
 def demo(request):
     return render(request, "fe/test.html")
 
-# def run_cap_picture(request):
-#     # Mở camera
-#     cap = cv2.VideoCapture(0)
+def run_cap_picture(request):
+    # Mở camera
+    cap = cv2.VideoCapture(0)
     
-#     # Kiểm tra xem camera có hoạt động không
-#     if not cap.isOpened():
-#         return HttpResponse("Failed to open camera.")
+    # Kiểm tra xem camera có hoạt động không
+    if not cap.isOpened():
+        return HttpResponse("Failed to open camera.")
 
-#     while True:
-#         # Đọc frame từ camera
-#         ret, frame = cap.read()
+    while True:
+        # Đọc frame từ camera
+        ret, frame = cap.read()
         
-#         # Hiển thị frame
-#         cv2.imshow('Captured Image', frame)
+        # Hiển thị frame
+        cv2.imshow('Captured Image', frame)
         
-#         # Chờ một khoảng thời gian ngắn và lấy phím được nhấn
-#         key = cv2.waitKey(1) & 0xFF
+        # Chờ một khoảng thời gian ngắn và lấy phím được nhấn
+        key = cv2.waitKey(1) & 0xFF
 
-#         # Kiểm tra xem phím "q" đã được nhấn chưa
-#         if key == ord('q'):
-#             break
+        # Kiểm tra xem phím "q" đã được nhấn chưa
+        if key == ord('q'):
+            break
 
-#     # Sau khi thoát khỏi vòng lặp, đóng camera
-#     cap.release()
-#     cv2.destroyAllWindows()
+    # Sau khi thoát khỏi vòng lặp, đóng camera
+    cap.release()
+    cv2.destroyAllWindows()
 
 #     return HttpResponse("Camera stopped successfully.")
-def run_cap_picture(request):
-    def capture_images(name, save_dir='Face/dataset'):
-        train_dir = os.path.join(save_dir, 'train', name)
-        val_dir = os.path.join(save_dir, 'val', name)
-        os.makedirs(train_dir, exist_ok=True)
-        os.makedirs(val_dir, exist_ok=True)
+# def run_cap_picture(request):
+#     def capture_images(name, save_dir='Face/dataset'):
+#         train_dir = os.path.join(save_dir, 'train', name)
+#         val_dir = os.path.join(save_dir, 'val', name)
+#         os.makedirs(train_dir, exist_ok=True)
+#         os.makedirs(val_dir, exist_ok=True)
 
-        cap = cv2.VideoCapture(0)
-        detector = MTCNN()
-        img_count = 0
-        captured_images = []
+#         cap = cv2.VideoCapture(0)
+#         detector = MTCNN()
+#         img_count = 0
+#         captured_images = []
 
-        print("Press 'c' to capture image. Press 'q' to quit.")
-        while img_count < 30:
-            ret, frame = cap.read()
-            if not ret:
-                break
+#         print("Press 'c' to capture image. Press 'q' to quit.")
+#         while img_count < 30:
+#             ret, frame = cap.read()
+#             if not ret:
+#                 break
             
-            cv2.imshow('Capturing Images', frame)
-            key = cv2.waitKey(1)
-            if key & 0xFF == ord('c'):
-                results = detector.detect_faces(frame)
-                if results:
-                    x1, y1, width, height = results[0]['box']
-                    x1, y1 = abs(x1), abs(y1)
-                    x2, y2 = x1 + width, y1 + height
-                    face = frame[y1:y2, x1:x2]
-                    face = cv2.resize(face, (160, 160))
-                    captured_images.append(face)
-                    img_count += 1
-                    print(f"Captured image {img_count}")
-            elif key & 0xFF == ord('q'):
-                break
+#             cv2.imshow('Capturing Images', frame)
+#             key = cv2.waitKey(1)
+#             if key & 0xFF == ord('c'):
+#                 results = detector.detect_faces(frame)
+#                 if results:
+#                     x1, y1, width, height = results[0]['box']
+#                     x1, y1 = abs(x1), abs(y1)
+#                     x2, y2 = x1 + width, y1 + height
+#                     face = frame[y1:y2, x1:x2]
+#                     face = cv2.resize(face, (160, 160))
+#                     captured_images.append(face)
+#                     img_count += 1
+#                     print(f"Captured image {img_count}")
+#             elif key & 0xFF == ord('q'):
+#                 break
 
-        cap.release()
-        cv2.destroyAllWindows()
+#         cap.release()
+#         cv2.destroyAllWindows()
         
-        if len(captured_images) == 0:
-            print("No images captured.")
-            return
+#         if len(captured_images) == 0:
+#             print("No images captured.")
+#             return
 
-        train_images, val_images = train_test_split(captured_images, test_size=0.33, random_state=42)
+#         train_images, val_images = train_test_split(captured_images, test_size=0.33, random_state=42)
         
-        for i, img in enumerate(train_images):
-            cv2.imwrite(os.path.join(train_dir, f'{name}_{i+1}.jpg'), img)
-        for i, img in enumerate(val_images):
-            cv2.imwrite(os.path.join(val_dir, f'{name}_{i+1}.jpg'), img)
+#         for i, img in enumerate(train_images):
+#             cv2.imwrite(os.path.join(train_dir, f'{name}_{i+1}.jpg'), img)
+#         for i, img in enumerate(val_images):
+#             cv2.imwrite(os.path.join(val_dir, f'{name}_{i+1}.jpg'), img)
 
-    # Tên cố định bạn muốn sử dụng
-    name = "anhdf"
+#     # Tên cố định bạn muốn sử dụng
+#     name = "anhdf"
 
-    capture_images(name)
-    return HttpResponse("Images captured and saved successfully.")
+#     capture_images(name)
+#     return HttpResponse("Images captured and saved successfully.")
 
 def signup(request):
     if request.method == "POST":

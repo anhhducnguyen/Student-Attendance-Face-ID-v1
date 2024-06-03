@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -91,7 +93,7 @@ WSGI_APPLICATION = 'geeksforgeeks.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django',
+        'NAME': 'djangonew',
         'USER': 'root',
         'PASSWORD': 'ducanh12',
         'HOST': 'localhost',
