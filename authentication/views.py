@@ -255,8 +255,14 @@ def signout(request):
     return redirect('home')
 
 
+# Tạo admin
+# python .\manage.py createsuperuser
 
+# Chuyển cơ sở dữ liệu
+# python manage.py migrate
 
+# Chạy dự án
+# python .\manage.py runserver
 
 
 
