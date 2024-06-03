@@ -254,6 +254,11 @@ def signout(request):
     messages.success(request, "Logged Out Successfully!!")
     return redirect('home')
 
+# Cài virtualenv
+# pip show virtualenv
+
+# Cài django
+# pip install django
 
 # Tạo admin
 # python .\manage.py createsuperuser
@@ -263,6 +268,9 @@ def signout(request):
 
 # Chạy dự án
 # python .\manage.py runserver
+
+# Cài đặt mysql
+# pip install mysql
 
 
 
