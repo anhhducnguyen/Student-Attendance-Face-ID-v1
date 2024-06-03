@@ -20,86 +20,86 @@ def home(request):
 def demo(request):
     return render(request, "fe/test.html")
 
-def run_cap_picture(request):
-    # Mở camera
-    cap = cv2.VideoCapture(0)
-    
-    # Kiểm tra xem camera có hoạt động không
-    if not cap.isOpened():
-        return HttpResponse("Failed to open camera.")
-
-    while True:
-        # Đọc frame từ camera
-        ret, frame = cap.read()
-        
-        # Hiển thị frame
-        cv2.imshow('Captured Image', frame)
-        
-        # Chờ một khoảng thời gian ngắn và lấy phím được nhấn
-        key = cv2.waitKey(1) & 0xFF
-
-        # Kiểm tra xem phím "q" đã được nhấn chưa
-        if key == ord('q'):
-            break
-
-    # Sau khi thoát khỏi vòng lặp, đóng camera
-    cap.release()
-    cv2.destroyAllWindows()
-
-#     return HttpResponse("Camera stopped successfully.")
 # def run_cap_picture(request):
-#     def capture_images(name, save_dir='Face/dataset'):
-#         train_dir = os.path.join(save_dir, 'train', name)
-#         val_dir = os.path.join(save_dir, 'val', name)
-#         os.makedirs(train_dir, exist_ok=True)
-#         os.makedirs(val_dir, exist_ok=True)
+#     # Mở camera
+#     cap = cv2.VideoCapture(0)
+    
+#     # Kiểm tra xem camera có hoạt động không
+#     if not cap.isOpened():
+#         return HttpResponse("Failed to open camera.")
 
-#         cap = cv2.VideoCapture(0)
-#         detector = MTCNN()
-#         img_count = 0
-#         captured_images = []
+#     while True:
+#         # Đọc frame từ camera
+#         ret, frame = cap.read()
+        
+#         # Hiển thị frame
+#         cv2.imshow('Captured Image', frame)
+        
+#         # Chờ một khoảng thời gian ngắn và lấy phím được nhấn
+#         key = cv2.waitKey(1) & 0xFF
 
-#         print("Press 'c' to capture image. Press 'q' to quit.")
-#         while img_count < 30:
-#             ret, frame = cap.read()
-#             if not ret:
-#                 break
+#         # Kiểm tra xem phím "q" đã được nhấn chưa
+#         if key == ord('q'):
+#             break
+
+#     # Sau khi thoát khỏi vòng lặp, đóng camera
+#     cap.release()
+#     cv2.destroyAllWindows()
+
+    # return HttpResponse("Camera stopped successfully.")
+def run_cap_picture(request):
+    def capture_images(name, save_dir='Face/dataset'):
+        train_dir = os.path.join(save_dir, 'train', name)
+        val_dir = os.path.join(save_dir, 'val', name)
+        os.makedirs(train_dir, exist_ok=True)
+        os.makedirs(val_dir, exist_ok=True)
+
+        cap = cv2.VideoCapture(0)
+        detector = MTCNN()
+        img_count = 0
+        captured_images = []
+
+        print("Press 'c' to capture image. Press 'q' to quit.")
+        while img_count < 30:
+            ret, frame = cap.read()
+            if not ret:
+                break
             
-#             cv2.imshow('Capturing Images', frame)
-#             key = cv2.waitKey(1)
-#             if key & 0xFF == ord('c'):
-#                 results = detector.detect_faces(frame)
-#                 if results:
-#                     x1, y1, width, height = results[0]['box']
-#                     x1, y1 = abs(x1), abs(y1)
-#                     x2, y2 = x1 + width, y1 + height
-#                     face = frame[y1:y2, x1:x2]
-#                     face = cv2.resize(face, (160, 160))
-#                     captured_images.append(face)
-#                     img_count += 1
-#                     print(f"Captured image {img_count}")
-#             elif key & 0xFF == ord('q'):
-#                 break
+            cv2.imshow('Capturing Images', frame)
+            key = cv2.waitKey(1)
+            if key & 0xFF == ord('c'):
+                results = detector.detect_faces(frame)
+                if results:
+                    x1, y1, width, height = results[0]['box']
+                    x1, y1 = abs(x1), abs(y1)
+                    x2, y2 = x1 + width, y1 + height
+                    face = frame[y1:y2, x1:x2]
+                    face = cv2.resize(face, (160, 160))
+                    captured_images.append(face)
+                    img_count += 1
+                    print(f"Captured image {img_count}")
+            elif key & 0xFF == ord('q'):
+                break
 
-#         cap.release()
-#         cv2.destroyAllWindows()
+        cap.release()
+        cv2.destroyAllWindows()
         
-#         if len(captured_images) == 0:
-#             print("No images captured.")
-#             return
+        if len(captured_images) == 0:
+            print("No images captured.")
+            return
 
-#         train_images, val_images = train_test_split(captured_images, test_size=0.33, random_state=42)
+        train_images, val_images = train_test_split(captured_images, test_size=0.33, random_state=42)
         
-#         for i, img in enumerate(train_images):
-#             cv2.imwrite(os.path.join(train_dir, f'{name}_{i+1}.jpg'), img)
-#         for i, img in enumerate(val_images):
-#             cv2.imwrite(os.path.join(val_dir, f'{name}_{i+1}.jpg'), img)
+        for i, img in enumerate(train_images):
+            cv2.imwrite(os.path.join(train_dir, f'{name}_{i+1}.jpg'), img)
+        for i, img in enumerate(val_images):
+            cv2.imwrite(os.path.join(val_dir, f'{name}_{i+1}.jpg'), img)
 
-#     # Tên cố định bạn muốn sử dụng
-#     name = "anhdf"
+    # Tên cố định bạn muốn sử dụng
+    name = "dc"
 
-#     capture_images(name)
-#     return HttpResponse("Images captured and saved successfully.")
+    capture_images(name)
+    return HttpResponse("Images captured and saved successfully.")
 
 def signup(request):
     if request.method == "POST":
