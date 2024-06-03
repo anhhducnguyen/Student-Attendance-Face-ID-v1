@@ -13,12 +13,19 @@ import cv2
 import os
 from sklearn.model_selection import train_test_split
 from mtcnn.mtcnn import MTCNN
+from .models import TblStudents
 
 def home(request):
     return render(request, "authentication/index.html")
 
 def demo(request):
-    return render(request, "fe/test.html")
+    # Truy vấn tất cả các bản ghi từ bảng authentication_tblstudents
+    students = TblStudents.objects.all()
+    # Trả về template test.html và truyền danh sách students vào template
+    return render(request, "fe/test.html", {'students': students})
+
+# def demo(request):
+#     return render(request, "fe/test.html")
 
 # def run_cap_picture(request):
 #     # Mở camera
@@ -101,11 +108,51 @@ def run_cap_picture(request):
     capture_images(name)
     return HttpResponse("Images captured and saved successfully.")
 
+# def signup(request):
+#     if request.method == "POST":
+#         username = request.POST['username']
+#         fname = request.POST['fname']
+#         lname = request.POST['lname']
+#         email = request.POST['email']
+#         pass1 = request.POST['pass1']
+#         pass2 = request.POST['pass2']
+        
+#         if User.objects.filter(username=username).exists():
+#             messages.error(request, "Username already exist! Please try some other username.")
+#             return redirect('signup')
+        
+#         if User.objects.filter(email=email).exists():
+#             messages.error(request, "Email Already Registered!!")
+#             return redirect('signup')
+        
+#         if len(username) > 20:
+#             messages.error(request, "Username must be under 20 characters!!")
+#             return redirect('signup')
+        
+#         if pass1 != pass2:
+#             messages.error(request, "Passwords didn't match!!")
+#             return redirect('signup')
+        
+#         if not username.isalnum():
+#             messages.error(request, "Username must be Alpha-Numeric!!")
+#             return redirect('signup')
+        
+#         myuser = User.objects.create_user(username, email, pass1)
+#         myuser.first_name = fname
+#         myuser.last_name = lname
+#         myuser.is_active = True  # Make sure the user is active
+#         myuser.is_staff = True  # Set staff status to True
+#         myuser.save()
+#         messages.success(request, "Your Account has been created successfully!!")
+        
+#         return redirect('signin')
+        
+#     return render(request, "authentication/signup.html")
 def signup(request):
     if request.method == "POST":
         username = request.POST['username']
         fname = request.POST['fname']
-        lname = request.POST['lname']
+        role = request.POST['role']  # Thay đổi lấy dữ liệu từ trường role
         email = request.POST['email']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
@@ -132,7 +179,7 @@ def signup(request):
         
         myuser = User.objects.create_user(username, email, pass1)
         myuser.first_name = fname
-        myuser.last_name = lname
+        myuser.last_name = role  # Lưu giá trị chức vụ vào trường last_name
         myuser.is_active = True  # Make sure the user is active
         myuser.is_staff = True  # Set staff status to True
         myuser.save()
@@ -159,7 +206,7 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'activation_failed.html')
 
-def signin(request):
+# def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
         pass1 = request.POST['pass1']
@@ -174,7 +221,7 @@ def signin(request):
                     'fname': fname
                 }
                 messages.success(request, "Đăng nhập thành công!")
-                return redirect('home')
+                return redirect('demo')
             else:
                 messages.error(request, "Tài khoản của bạn không hoạt động. Vui lòng liên hệ admin.")
                 return redirect('signin')
@@ -182,6 +229,51 @@ def signin(request):
             messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
             return redirect('signin')
     
+    return render(request, "authentication/signin.html")
+# def signin(request):
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         last_name = request.POST['last_name']  # Lấy dữ liệu từ trường last_name
+        
+#         # Kiểm tra thông tin đăng nhập
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             if user.is_active and user.last_name == last_name:  # Sử dụng trường last_name để kiểm tra
+#                 login(request, user)
+#                 fname = user.first_name
+#                 messages.success(request, "Đăng nhập thành công!")
+#                 return redirect('demo')
+#             else:
+#                 messages.error(request, "Tài khoản của bạn không hoạt động hoặc tên không đúng.")
+#                 return redirect('signin')
+#         else:
+#             messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
+#             return redirect('signin')
+
+#     return render(request, "authentication/signin.html")
+
+def signin(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        role = request.POST['last_name']  # Thay thế lấy dữ liệu từ trường last_name
+        
+        # Kiểm tra thông tin đăng nhập
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            if user.is_active and user.last_name == role:  # Sử dụng trường last_name để kiểm tra
+                login(request, user)
+                fname = user.first_name
+                messages.success(request, "Đăng nhập thành công!")
+                return redirect('demo')
+            else:
+                messages.error(request, "Tài khoản của bạn không hoạt động hoặc chức vụ không đúng.")
+                return redirect('signin')
+        else:
+            messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
+            return redirect('signin')
+
     return render(request, "authentication/signin.html")
 
 

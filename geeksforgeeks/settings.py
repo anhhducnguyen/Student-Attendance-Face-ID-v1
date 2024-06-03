@@ -93,7 +93,8 @@ WSGI_APPLICATION = 'geeksforgeeks.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djangonew',
+        # 'NAME': 'djangonew',
+        'NAME': 'dbjan',
         'USER': 'root',
         'PASSWORD': 'ducanh12',
         'HOST': 'localhost',
