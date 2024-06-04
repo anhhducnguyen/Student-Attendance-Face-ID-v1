@@ -7,3 +7,5 @@ class TblStudents(models.Model):
     phone = models.CharField(max_length=15)
     dateBirth = models.DateField()
 
+
+

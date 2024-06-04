@@ -1,5 +1,3 @@
-/* singin.css */
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -67,32 +65,43 @@ button:hover {
 }
 
 .alert {
-    padding: 15px;
+    padding: 10px;
     margin-bottom: 20px;
     border: 1px solid transparent;
     border-radius: 4px;
-}
-
-.alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-}
-
-.alert-danger {
     color: #721c24;
     background-color: #f8d7da;
     border-color: #f5c6cb;
+    font-size: 14px;
+    text-align: left;
 }
 
-.close {
-    float: right;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    opacity: .5;
-    background-color: transparent;
-    border: 0;
+.alert strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Custom styles for the select dropdown */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    padding-right: 30px;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" height="24" stroke="%23000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"/></svg>');
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 10px);
+    background-position-y: 50%;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 5px;
+}
+
+select option {
+    padding: 10px;
+}
+
+/* Custom styles for the select dropdown menu */
+select:focus option {
+    background-color: #f1f1f1;
 }
