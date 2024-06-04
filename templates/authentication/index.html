@@ -23,7 +23,6 @@
     {% if user.is_authenticated %}
     <h3>Hello {{fname}}!</h3>
     <h4>You're successfully logged in.</h4>
-    <!-- <button type="submit"><a href="/run_cap_picture">Run</a></button> -->
     <form action="{% url 'run_cap_picture' %}" method="post">
         {% csrf_token %}
         <button type="submit">Run</button>
