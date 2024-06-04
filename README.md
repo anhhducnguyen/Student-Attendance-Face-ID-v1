@@ -33,3 +33,49 @@
 - Thư viện nhận diện khuôn mặt: OpenCV, dlib
 - Triển khai: Docker, Kubernetes
 - Xác thực: JWT (JSON Web Token) hoặc OAuth2
+
+# Cài đặt
+- Cài virtualenv
+ ```bash
+ pip show virtualenv
+ ```
+- Cài django
+ ```bash
+ pip install django
+ ```
+
+- Tạo admin
+```bash
+python .\manage.py createsuperuse
+```
+- Cài django
+ ```bash
+ pip install django
+ ```
+
+- Chuyển cơ sở dữ liệu
+```bash
+python manage.py migrate
+```
+- Chạy dự án
+ ```bash
+python .\manage.py runserver
+ ```
+
+- Cài đặt mysql
+```bash
+pip install mysql
+```
+- Cài đặt dlib
+ ```bash
+[python .\manage.py runserver](https://github.com/z-mahmud22/Dlib_Windows_Python3.x)
+ ```
+
+- Bản python 3.12
+```bash
+python -m pip install dlib-19.24.99-cp312-cp312-win_amd64.whl
+```
+- Cài đặt
+ ```bash
+pip install scikit-learn
+ ```
