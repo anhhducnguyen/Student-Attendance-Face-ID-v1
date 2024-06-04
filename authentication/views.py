@@ -179,7 +179,7 @@ def signin(request):
                 login(request, user)
                 fname = user.first_name
                 messages.success(request, "Đăng nhập thành công!")
-                return redirect('ok')
+                return redirect('home')
             else:
                 messages.error(request, "Tài khoản của bạn không hoạt động hoặc chức vụ không đúng.")
                 return redirect('signin')
