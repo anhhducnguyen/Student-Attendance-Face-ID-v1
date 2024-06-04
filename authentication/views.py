@@ -15,6 +15,7 @@ from sklearn.model_selection import train_test_split
 from mtcnn.mtcnn import MTCNN
 from .models import TblStudents
 
+
 def home(request):
     return render(request, "authentication/index.html")
 

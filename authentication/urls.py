@@ -18,13 +18,16 @@ from . import dashboardController
 
 urlpatterns = [
     # views
-    path('', views.home, name='home'),
+    # path('', views.home, name='home'),
     path('signup', views.signup, name='signup'),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path('signin', views.signin, name='signin'),
     path('signout', views.signout, name='signout'),
     path('run_cap_picture/', views.run_cap_picture, name='run_cap_picture'),
     # dashboardController
-    path('demo', dashboardController.studentsView, name='demo'),
+    # path('demo', dashboardController.studentsView, name='demo'),
     path('ok', dashboardController.ok, name='ok'),
+
+    # test data
+    path('', dashboardController.data, name='students-view'),
 ]
