@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
@@ -108,43 +108,91 @@ def run_cap_picture(request):
     capture_images(name)
     return HttpResponse("Images captured and saved successfully.")
 
+# def signup(request):
+#     if request.method == "POST":
+#         username = request.POST['username']
+#         fname = request.POST['fname']
+#         role = request.POST['role']  # Thay đổi lấy dữ liệu từ trường role
+#         email = request.POST['email']
+#         pass1 = request.POST['pass1']
+#         pass2 = request.POST['pass2']
+        
+#         if User.objects.filter(username=username).exists():
+#             messages.error(request, "Username already exist! Please try some other username.")
+#             return redirect('signup')
+        
+#         if User.objects.filter(email=email).exists():
+#             messages.error(request, "Email Already Registered!!")
+#             return redirect('signup')
+        
+#         if len(username) > 20:
+#             messages.error(request, "Username must be under 20 characters!!")
+#             return redirect('signup')
+        
+#         if pass1 != pass2:
+#             messages.error(request, "Passwords didn't match!!")
+#             return redirect('signup')
+        
+#         if not username.isalnum():
+#             messages.error(request, "Username must be Alpha-Numeric!!")
+#             return redirect('signup')
+        
+#         myuser = User.objects.create_user(username, email, pass1)
+#         myuser.first_name = fname
+#         myuser.last_name = role  # Lưu giá trị chức vụ vào trường last_name
+#         myuser.is_active = True  # Make sure the user is active
+#         myuser.is_staff = True  # Set staff status to True
+#         myuser.save()
+#         messages.success(request, "Your Account has been created successfully!!")
+        
+#         return redirect('signin')
+        
+#     return render(request, "authentication/signup.html")
+
 def signup(request):
     if request.method == "POST":
         username = request.POST['username']
         fname = request.POST['fname']
-        role = request.POST['role']  # Thay đổi lấy dữ liệu từ trường role
+        role = request.POST['role']  # Get the role from the form
         email = request.POST['email']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
         
         if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exist! Please try some other username.")
+            messages.error(request, "Username already exists! Please try another username.")
             return redirect('signup')
         
         if User.objects.filter(email=email).exists():
-            messages.error(request, "Email Already Registered!!")
+            messages.error(request, "Email already registered!")
             return redirect('signup')
         
         if len(username) > 20:
-            messages.error(request, "Username must be under 20 characters!!")
+            messages.error(request, "Username must be under 20 characters!")
             return redirect('signup')
         
         if pass1 != pass2:
-            messages.error(request, "Passwords didn't match!!")
+            messages.error(request, "Passwords didn't match!")
             return redirect('signup')
         
         if not username.isalnum():
-            messages.error(request, "Username must be Alpha-Numeric!!")
+            messages.error(request, "Username must be alphanumeric!")
             return redirect('signup')
         
+        # Create the user
         myuser = User.objects.create_user(username, email, pass1)
         myuser.first_name = fname
-        myuser.last_name = role  # Lưu giá trị chức vụ vào trường last_name
-        myuser.is_active = True  # Make sure the user is active
-        myuser.is_staff = True  # Set staff status to True
+        myuser.is_active = True
+        myuser.is_staff = True
         myuser.save()
-        messages.success(request, "Your Account has been created successfully!!")
         
+        # Assign user to the appropriate group
+        if role == 'student':
+            group = Group.objects.get(name='Students')
+        elif role == 'teacher':
+            group = Group.objects.get(name='Teachers')
+        myuser.groups.add(group)
+        
+        messages.success(request, "Your account has been created successfully!")
         return redirect('signin')
         
     return render(request, "authentication/signup.html")
@@ -166,22 +214,50 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'activation_failed.html')
 
+# def signin(request):
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         role = request.POST['last_name']  # Thay thế lấy dữ liệu từ trường last_name
+        
+#         # Kiểm tra thông tin đăng nhập
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             if user.is_active and user.last_name == role:  # Sử dụng trường last_name để kiểm tra
+#                 login(request, user)
+#                 fname = user.first_name
+#                 messages.success(request, "Đăng nhập thành công!")
+#                 return redirect('home')
+#             else:
+#                 messages.error(request, "Tài khoản của bạn không hoạt động hoặc chức vụ không đúng.")
+#                 return redirect('signin')
+#         else:
+#             messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
+#             return redirect('signin')
+
+#     return render(request, "authentication/signin.html")
+
+
 def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        role = request.POST['last_name']  # Thay thế lấy dữ liệu từ trường last_name
+        role = request.POST['role']  # Get the role from the form
         
-        # Kiểm tra thông tin đăng nhập
+        # Authenticate the user
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            if user.is_active and user.last_name == role:  # Sử dụng trường last_name để kiểm tra
-                login(request, user)
-                fname = user.first_name
-                messages.success(request, "Đăng nhập thành công!")
-                return redirect('home')
+            if user.is_active:
+                # Check if user belongs to the specified group
+                if (role == 'student' and user.groups.filter(name='Students').exists()) or (role == 'teacher' and user.groups.filter(name='Teachers').exists()):
+                    login(request, user)
+                    messages.success(request, "Đăng nhập thành công!")
+                    return redirect('home')
+                else:
+                    messages.error(request, "Bạn không có quyền truy cập với vai trò này.")
+                    return redirect('signin')
             else:
-                messages.error(request, "Tài khoản của bạn không hoạt động hoặc chức vụ không đúng.")
+                messages.error(request, "Tài khoản của bạn không hoạt động.")
                 return redirect('signin')
         else:
             messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
