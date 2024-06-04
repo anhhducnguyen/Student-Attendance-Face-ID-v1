@@ -135,7 +135,7 @@
             </a>
           </li>
           <li style="margin-top: 300px;" class="nav-item menu-open">
-            <a href="#" class="nav-link ">
+            <a href="/signout" class="nav-link ">
             <i class="fas fa-sign-out-alt"></i>
               <p>
                 SignOut

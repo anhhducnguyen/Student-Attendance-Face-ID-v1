@@ -1,0 +1,22 @@
+[
+    {
+        "model": "GFGDjangoLoginSystemMain.tblstudents",
+        "pk": 6,
+        "fields": {
+            "name": "John Do",
+            "email": "joh@example.com",
+            "phone": "1234567890",
+            "dateBirth": "2000-01-01"
+        }
+    },
+    {
+        "model": "GFGDjangoLoginSystemMain.tblstudents",
+        "pk": 7,
+        "fields": {
+            "name": "Jan Smith",
+            "email": "ja@example.com",
+            "phone": "0987654321",
+            "dateBirth": "1999-05-15"
+        }
+    }
+]
