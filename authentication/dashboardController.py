@@ -5,6 +5,11 @@ from .models import TblStudents
 from django.db.models import Count
 
 
+def demo(request):
+    # Truy vấn tất cả các bản ghi từ bảng authentication_tblstudents
+    # Trả về template test.html và truyền danh sách students vào template
+    return render(request, "fe/test.html")
+
 # def studentsView(request):
 #     students = TblStudents.objects.all()
 #     # l = list(TblStudents.objects.all())

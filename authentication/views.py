@@ -19,6 +19,15 @@ from .models import TblStudents
 def home(request):
     return render(request, "authentication/index.html")
 
+def bost(request):
+    return render(request, "admin/index.php")
+
+def bost2(request):
+    return render(request, "admin/index.php")
+
+def userthem(request):
+    return render(request, "admin/nguoidung.php")
+
 def demo(request):
     # Truy vấn tất cả các bản ghi từ bảng authentication_tblstudents
     students = TblStudents.objects.all()
@@ -207,7 +216,9 @@ def signin(request):
                 if role == 'student':
                     return redirect('home')
                 elif role == 'teacher':
-                    return redirect('demo')
+                    # return redirect('demo')
+                    return redirect('bostt')
+
                 else:
                     messages.error(request, "Chức vụ không hợp lệ.")
                     return redirect('signin')
