@@ -48,10 +48,6 @@
 ```bash
 python .\manage.py createsuperuse
 ```
-- Cài django
- ```bash
- pip install django
- ```
 
 - Chuyển cơ sở dữ liệu
 ```bash
@@ -68,7 +64,7 @@ pip install mysql
 ```
 - Cài đặt dlib
  ```bash
-[python .\manage.py runserver](https://github.com/z-mahmud22/Dlib_Windows_Python3.x)
+https://github.com/z-mahmud22/Dlib_Windows_Python3.x
  ```
 
 - Bản python 3.12
