@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Student</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'assets/css/add_up.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Update Student {{ student.name }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update Student</button>
+        </form>
+        <a href="{% url 'demo' %}">Back to Student List</a>
+    </div>
+</body>
+</html>

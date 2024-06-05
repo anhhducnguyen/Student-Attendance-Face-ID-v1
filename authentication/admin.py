@@ -12,3 +12,4 @@ class TblStudentsAdmin(admin.ModelAdmin):
 
 # or alternatively you can use admin.site.register() method
 # admin.site.register(TblStudents, TblStudentsAdmin)
+

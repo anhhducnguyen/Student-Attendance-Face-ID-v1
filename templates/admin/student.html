@@ -25,16 +25,9 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'assets/css/Admin/admin/assets/plugins/summernote/summernote-bs4.min.css' %}">
 
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
 
-  <!-- <link rel="stylesheet" href="assets/css/Admin/admin/assets/plugins/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="assets/css/Admin/admin/assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <link rel="stylesheet" href="assets/css/Admin/admin/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/Admin/admin/assets/plugins/jqvmap/jqvmap.min.css">
-  <link rel="stylesheet" href="assets/css/Admin/admin/assets/css/adminlte.min.css">
-  <link rel="stylesheet" href="assets/css/Admin/admin/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <link rel="stylesheet" href="assets/css/Admin/admin/assets/plugins/daterangepicker/daterangepicker.css">
-  <link rel="stylesheet" href="assets/css/Admin/admin/assets/plugins/summernote/summernote-bs4.min.css"> -->
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -168,92 +161,135 @@
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
-    <!-- /.content-header -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3>20</h3>
+    <!-- <h1>Student List</h1> -->
+    <!-- <a href="{% url 'add_student' %}"><button id="new3">Add Member</button></a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Date of Birth</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.student_id }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.phone }}</td>
+                <td>{{ student.dateBirth }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> -->
 
-                <p>Room</p>
-              </div>
-              <div class="icon">
-              <i class="nav-icon fas fa-table"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3>10</h3>
-
-                <p>Room Confirm</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>10</h3>
-
-                <p>User Registrations</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>65</h3>
-
-                <p>Unique Visitors</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-        </div>
-        <!-- /.row -->
-        <!-- Main row -->
-        
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
+    <div class="container">
+      <form method="get" action="{% url 'demo' %}">
+        <input type="text" name="q" placeholder="Search students..." value="{{ search_query }}">
+        <button type="submit">Search</button>
+    </form>
+      <a href="{% url 'add_student' %}"><button id="new3">Add Member</button></a>
+      <table id="customers" border="1">
+        <thead>
+          <tr>
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Date of Birth</th>
+              <th colspan="2" id="mid">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for student in students %}
+          <tr>
+              <td>{{ student.student_id }}</td>
+              <td>{{ student.name }}</td>
+              <td>{{ student.email }}</td>
+              <td>{{ student.phone }}</td>
+              <td>{{ student.dateBirth }}</td>
+              <td>
+                <a href="{% url 'update_student' student.student_id %}"><button id="up">update</button></a>
+              </td>
+              <td>
+                  <a href="{% url 'delete_student' student.student_id %}"><button id="del">delete</button></a>
+              </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
   </div>
 
+
+      </div>
+    </section>
+  </div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <!-- Footer -->
-  <footer class="main-footer">
+  <!-- <footer class="main-footer">
     <strong><a href="#">HotelManager</a></strong>
     <div class="float-right d-none d-sm-inline-block">
       <b>Thecappahotel@gmail.com</b>
     </div>
-  </footer>
+  </footer> -->
 </div>
-<!-- ./wrapper -->
 
 <!-- jQuery -->
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
