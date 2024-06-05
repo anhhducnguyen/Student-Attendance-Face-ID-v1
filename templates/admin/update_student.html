@@ -7,13 +7,13 @@
 </head>
 <body>
     <div class="container">
-        <h2>Update Student {{ student.name }}</h2>
+        <h2>Cập nhật thông tin sinh viên</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Update Student</button>
+            <button type="submit">Lưu thông tin</button>
         </form>
-        <a href="{% url 'demo' %}">Back to Student List</a>
+        <a href="{% url 'demo' %}">Trở lại</a>
     </div>
 </body>
 </html>

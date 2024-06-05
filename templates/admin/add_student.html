@@ -8,13 +8,13 @@
 <body>
     <body>
         <div class="container">
-            <h2>Add New Student</h2>
+            <h2>Thêm sinh viên mới</h2>
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit">Add Student</button>
+                <button type="submit">Thêm sinh viên</button>
             </form>
-            <a href="{% url 'demo' %}">Back to Student List</a>
+            <a href="{% url 'demo' %}">Trở lại</a>
         </div>
     </body>
 </body>

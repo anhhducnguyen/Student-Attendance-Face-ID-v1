@@ -39,8 +39,7 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
+  <!-- <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -50,7 +49,6 @@
       </li>
     </ul>
 
-    <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <p class="nav-link">ADMIN</p>
@@ -61,7 +59,7 @@
         </a>
       </li>
     </ul>
-  </nav>
+  </nav> -->
 
   <!-- Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">

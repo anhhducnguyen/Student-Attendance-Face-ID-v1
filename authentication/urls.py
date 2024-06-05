@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from . import dashboardController
-
+from . import camera
 urlpatterns = [
     # views
     path('', views.home, name='home'),
@@ -15,15 +15,21 @@ urlpatterns = [
     path('signin', views.signin, name='signin'),
     path('signout', views.signout, name='signout'),
     path('run_cap_picture/', views.run_cap_picture, name='run_cap_picture'),
+    # path('run_cap_picture/<str:student_id>/<str:name>/', views.run_cap_picture, name='run_cap_picture'),
+    path('aa/<str:student_id>/<str:name>/', views.aa, name='aa'),
     # dashboardController
+    # buil
     path('demo', dashboardController.demo, name='demo'),
     # path('ok', dashboardController.ok, name='ok'),
-
+    path('regisImg', views.regisImg, name='regisImg'),
     # test data
     # path('', dashboardController.data, name='students-view'),
     path('test', dashboardController.data, name='students-view'),
     path('add_student/', dashboardController.add_student, name='add_student'),
     path('update_student/<int:student_id>/', dashboardController.update_student, name='update_student'),
     path('delete_student/<int:student_id>/', dashboardController.delete_student, name='delete_student'),
+
+
+    path('diemdanh', camera.diemdanh, name='diemdanh'),
    
 ]
