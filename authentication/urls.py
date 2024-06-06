@@ -5,7 +5,7 @@ from . import dashboardController
 from . import camera
 urlpatterns = [
     # views
-    path('', views.home, name='home'),
+    # path('', views.home, name='home'),
     # path('', views.bost, name='bost'),
     path('bostt', views.bost2, name='bostt'),
     path('nguoidung', views.userthem, name='nguoidung'),
@@ -19,7 +19,7 @@ urlpatterns = [
     path('aa/<str:student_id>/<str:name>/', views.aa, name='aa'),
     # dashboardController
     # buil
-    path('demo', dashboardController.demo, name='demo'),
+    path('', dashboardController.demo, name='demo'),
     # path('ok', dashboardController.ok, name='ok'),
     path('regisImg', views.regisImg, name='regisImg'),
     # test data

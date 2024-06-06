@@ -151,7 +151,7 @@ def capture_images(student_id, name, save_dir='Face/dataset_split'):
     captured_images = []
 
     print("Press 'c' to capture image. Press 'q' to quit.")
-    while img_count < 2:
+    while img_count < 30:
         ret, frame = cap.read()
         if not ret:
             break
@@ -295,6 +295,7 @@ def aa(request, student_id, name):
     elif request.method == 'POST':
         # Call the capture_images function with student_id and name
         capture_images(student_id, name)
+        main()
         # Gọi hàm create_embeddings sau khi chụp ảnh
         dataset_path = 'Face/5-celebrity-faces-dataset.npz'  # Thay bằng đường dẫn thực tế
         output_path = 'Face/5-celebrity-faces-embeddings.npz'  # Thay bằng đường dẫn thực tế
