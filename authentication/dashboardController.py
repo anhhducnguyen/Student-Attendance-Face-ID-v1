@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import TblStudents, Classroom
+from .models import Attendance, TblStudents, Classroom
 from django.http import JsonResponse
 from .models import TblStudents
 from django.db.models import Count
@@ -208,3 +208,10 @@ def classroom_student_list(request, classroom_id):
         'students': students,
         'total_students': total_students
     })
+
+
+def student_list(request):
+    students = TblStudents.objects.all()
+    attendance = Attendance.objects.filter(student__in=students)
+
+    return render(request, 'attendance/attendance.html', {'students': students, 'attendance': attendance})

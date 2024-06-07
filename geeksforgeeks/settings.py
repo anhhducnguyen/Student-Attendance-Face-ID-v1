@@ -101,6 +101,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "defaultdb",
+#         "USER": "avnadmin",
+#         "PASSWORD": "AVNS_MuzLqNmGe4b4KEIHaJo",
+#         "HOST": "mysql-2f27a1bc-anhnguyen2k373-3703.f.aivencloud.com",
+#         "PORT": "10848",
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
