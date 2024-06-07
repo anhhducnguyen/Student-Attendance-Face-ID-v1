@@ -75,7 +75,7 @@
 }
 
 h1 {
-    color: green;
+    color: #009879;
 }
 
 .container1 input {
@@ -99,10 +99,10 @@ h1 {
 .container #new3 {
     margin-bottom: 30px;
     padding: 8px;
-    background-color: #04AA6D;
+    background-color: #009879;
     color: white;
     border-radius: 4px;
-    border-color: #04AA6D;
+    border-color: #009879;
 }
 
 
@@ -124,7 +124,7 @@ h1 {
     margin-right: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 60%; /* Adjust as needed */
+    width: 60%; 
     box-sizing: border-box;
     font-size: 16px;
 }
@@ -133,12 +133,15 @@ h1 {
     padding: 10px 16px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #4CAF50;
+    background-color: #009879;
     color: white;
     border: none;
     border-radius: 4px;
 }
 
 .search-container button:hover {
-    background-color: #45a049;
+    background-color: #066552;
 }
+
+
+

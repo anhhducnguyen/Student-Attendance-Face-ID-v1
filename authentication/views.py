@@ -16,10 +16,20 @@ from mtcnn.mtcnn import MTCNN
 from .models import TblStudents
 from Face.train import main
 from .x import get_embedding, create_embeddings
+from os import listdir
+from os.path import isdir
+from PIL import Image
+from numpy import savez_compressed, asarray
+from mtcnn.mtcnn import MTCNN
+import base64
+import numpy as np
     
 
 def home(request):
     return render(request, "authentication/index.html")
+
+def classroom(request):
+    return render(request, "class/classroom_detail.html")
 
 def regisImg(request):
     return render(request, "admin/registerImage.html")
@@ -33,113 +43,45 @@ def bost2(request):
 def userthem(request):
     return render(request, "admin/nguoidung.php")
 
-def demo(request):
-    # Truy vấn tất cả các bản ghi từ bảng authentication_tblstudents
-    students = TblStudents.objects.all()
-    # Trả về template test.html và truyền danh sách students vào template
-    return render(request, "fe/test.html", {'students': students})
-
 # def demo(request):
-#     return render(request, "fe/test.html")
+#     students = TblStudents.objects.all()
+#     return render(request, "fe/test.html", {'students': students})
 
-# def run_cap_picture(request):
-#     # Mở camera
-#     cap = cv2.VideoCapture(0)
+
+# Function to enhance image by applying denoising and smoothing
+def enhance_image(image):
+    # Làm sạch nhiễu bằng Gaussian Blur
+    blurred_image = cv2.GaussianBlur(image, (5, 5), 0)
     
-#     # Kiểm tra xem camera có hoạt động không
-#     if not cap.isOpened():
-#         return HttpResponse("Failed to open camera.")
+    # Tăng cường độ sáng và độ tương phản
+    enhanced_image = cv2.convertScaleAbs(blurred_image, alpha=1.2, beta=10)
+    
+    return enhanced_image
 
-#     while True:
-#         # Đọc frame từ camera
-#         ret, frame = cap.read()
+# Function to flip and rotate images to increase dataset size
+def augment_images(images):
+    augmented_images = []
+    for image in images:
         
-#         # Hiển thị frame
-#         cv2.imshow('Captured Image', frame)
+        # Flip image vertically
+        flipped_vertical = cv2.flip(image, 1)
+        augmented_images.append(flipped_vertical)
         
-#         # Chờ một khoảng thời gian ngắn và lấy phím được nhấn
-#         key = cv2.waitKey(1) & 0xFF
-
-#         # Kiểm tra xem phím "q" đã được nhấn chưa
-#         if key == ord('q'):
-#             break
-
-#     # Sau khi thoát khỏi vòng lặp, đóng camera
-#     cap.release()
-#     cv2.destroyAllWindows()
-
-    # return HttpResponse("Camera stopped successfully.")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def run_cap_picture(request):
-    def capture_images(name, save_dir='Face/dataset'):
-        train_dir = os.path.join(save_dir, 'train', name)
-        val_dir = os.path.join(save_dir, 'val', name)
-        os.makedirs(train_dir, exist_ok=True)
-        os.makedirs(val_dir, exist_ok=True)
-
-        cap = cv2.VideoCapture(0)
-        detector = MTCNN()
-        img_count = 0
-        captured_images = []
-
-        print("Press 'c' to capture image. Press 'q' to quit.")
-        while img_count < 30:
-            ret, frame = cap.read()
-            if not ret:
-                break
-            
-            cv2.imshow('Capturing Images', frame)
-            key = cv2.waitKey(1)
-            if key & 0xFF == ord('c'):
-                results = detector.detect_faces(frame)
-                if results:
-                    x1, y1, width, height = results[0]['box']
-                    x1, y1 = abs(x1), abs(y1)
-                    x2, y2 = x1 + width, y1 + height
-                    face = frame[y1:y2, x1:x2]
-                    face = cv2.resize(face, (160, 160))
-                    captured_images.append(face)
-                    img_count += 1
-                    print(f"Captured image {img_count}")
-            elif key & 0xFF == ord('q'):
-                break
-
-        cap.release()
-        cv2.destroyAllWindows()
+        # Rotate image by 15 degrees clockwise
+        rows, cols, _ = image.shape
+        rotation_matrix = cv2.getRotationMatrix2D((cols / 2, rows / 2), 15, 1)
+        rotated_image = cv2.warpAffine(image, rotation_matrix, (cols, rows))
+        augmented_images.append(rotated_image)
         
-        if len(captured_images) == 0:
-            print("No images captured.")
-            return
-
-        train_images, val_images = train_test_split(captured_images, test_size=0.33, random_state=42)
-        
-        for i, img in enumerate(train_images):
-            cv2.imwrite(os.path.join(train_dir, f'{name}_{i+1}.jpg'), img)
-        for i, img in enumerate(val_images):
-            cv2.imwrite(os.path.join(val_dir, f'{name}_{i+1}.jpg'), img)
-
-    # Tên cố định bạn muốn sử dụng
-    name = "dc"
-
-    capture_images(name)
-    return HttpResponse("Images captured and saved successfully.")
+        # Rotate image by -15 degrees counterclockwise
+        rotation_matrix = cv2.getRotationMatrix2D((cols / 2, rows / 2), -15, 1)
+        rotated_image = cv2.warpAffine(image, rotation_matrix, (cols, rows))
+        augmented_images.append(rotated_image)
+    return augmented_images
 
 
 def capture_images(student_id, name, save_dir='Face/dataset_split'):
-    # Create directories if not exist
+        # Create directories if not exist
     train_dir = os.path.join(save_dir, 'train', f'{student_id}_{name.replace(" ", "")}')
     val_dir = os.path.join(save_dir, 'val', f'{student_id}_{name.replace(" ", "")}')
     os.makedirs(train_dir, exist_ok=True)
@@ -151,7 +93,7 @@ def capture_images(student_id, name, save_dir='Face/dataset_split'):
     captured_images = []
 
     print("Press 'c' to capture image. Press 'q' to quit.")
-    while img_count < 30:
+    while img_count < 10:
         ret, frame = cap.read()
         if not ret:
             break
@@ -169,6 +111,8 @@ def capture_images(student_id, name, save_dir='Face/dataset_split'):
                 x2, y2 = x1 + width, y1 + height
                 face = frame[y1:y2, x1:x2]
                 face = cv2.resize(face, (160, 160))
+                # Enhance the captured face image
+                face = enhance_image(face)
                 captured_images.append(face)
                 img_count += 1
                 print(f"Captured image {img_count}")
@@ -178,27 +122,28 @@ def capture_images(student_id, name, save_dir='Face/dataset_split'):
     cap.release()
     cv2.destroyAllWindows()
     
-    # Split the images into training and validation sets
-    train_images, val_images = train_test_split(captured_images, test_size=0.33, random_state=42)
+    # Augment captured images
+    augmented_images = augment_images(captured_images)
     
-    # Save images
+    # Split the images into training and validation sets
+    train_images, val_images = train_test_split(augmented_images, test_size=0.33, random_state=42)
+    
     for i, img in enumerate(train_images):
         cv2.imwrite(os.path.join(train_dir, f'{student_id}_{name.replace(" ", "")}_{i+1}.jpg'), img)
     for i, img in enumerate(val_images):
         cv2.imwrite(os.path.join(val_dir, f'{student_id}_{name.replace(" ", "")}_{i+1}.jpg'), img)
 
+def aa(request, student_id, name):
+    if request.method == 'GET':
+        return render(request, 'admin/capture_image.html', {'student_id': student_id, 'name': name})
+    elif request.method == 'POST':
+        capture_images(student_id, name)
+        return HttpResponse("Images captured, saved, and embeddings created successfully.")
 
-from os import listdir
-from os.path import isdir
-from PIL import Image
-from numpy import savez_compressed, asarray
-from mtcnn.mtcnn import MTCNN
 
-# Hàm trích xuất khuôn mặt từ một ảnh
+    
 def extract_face(filename, required_size=(160, 160)):
-    # Tải ảnh từ tệp
     image = Image.open(filename)
-    # Chuyển đổi sang RGB nếu cần thiết
     image = image.convert('RGB')
     # Chuyển đổi sang mảng
     pixels = asarray(image)
@@ -225,124 +170,56 @@ def extract_face(filename, required_size=(160, 160)):
 # Hàm tải hình ảnh và trích xuất khuôn mặt cho tất cả hình ảnh trong một thư mục
 def load_faces(directory):
     faces = list()
-    # Liệt kê các tệp
     for filename in listdir(directory):
-        # Đường dẫn
         path = directory + '/' + filename
-        # Trích xuất khuôn mặt
         face = extract_face(path)
-        # Nếu không có khuôn mặt nào được phát hiện, bỏ qua ảnh này
         if face is None:
             continue
-        # Lưu trữ
         faces.append(face)
     return faces
 
-# Hàm tải tập dữ liệu chứa một thư mục con cho mỗi lớp chứa các hình ảnh
 def load_dataset(directory):
     X, y = list(), list()
-    # Liệt kê các thư mục, một cho mỗi lớp
     for subdir in listdir(directory):
-        # Đường dẫn
+
         path = directory + subdir + '/'
-        # Bỏ qua các tệp có thể có trong thư mục
         if not isdir(path):
             continue
-        # Tải tất cả các khuôn mặt trong thư mục con
+
         faces = load_faces(path)
-        # Tạo nhãn
         labels = [subdir for _ in range(len(faces))]
-        # Tóm tắt tiến trình
         print('>loaded %d examples for class: %s' % (len(faces), subdir))
-        # Lưu trữ
+
         X.extend(faces)
         y.extend(labels)
     return asarray(X), asarray(y)
 
-# Hàm chính để tải tập dữ liệu, tạo và lưu trữ nó
 def main():
-    # Tải tập dữ liệu huấn luyện
     trainX, trainy = load_dataset('Face/dataset_split/train/')
     print(trainX.shape, trainy.shape)
 
-    # Tải tập dữ liệu kiểm tra
     testX, testy = load_dataset('Face/dataset_split/val/')
 
-    # Lưu mảng vào một tệp ở định dạng nén
     savez_compressed('Face/5-celebrity-faces-dataset.npz', trainX, trainy, testX, testy)
 
-# Gọi hàm chính
 if __name__ == "__main__":
     main()
 
 
+    
+def embeddings(request):
+    main()
+    dataset_path = 'Face/5-celebrity-faces-dataset.npz' 
+    output_path = 'Face/5-celebrity-faces-embeddings.npz'  
+    create_embeddings(dataset_path, output_path)
+    return HttpResponse("Images captured, saved, and embeddings created successfully.")
 
-# def aa(request, student_id, name):
-#     if request.method == 'GET':
-#         # Render the form for capturing images
-#         return render(request, 'admin/capture_image.html', {'student_id': student_id, 'name': name})
-#     elif request.method == 'POST':
-#         # Call the capture_images function with student_id and name
-#         capture_images(student_id, name)
-#         main()
-#         # Render a success message
-#         return HttpResponse("Images captured and saved successfully.")
-
-def aa(request, student_id, name):
-    if request.method == 'GET':
-        # Render the form for capturing images
-        return render(request, 'admin/capture_image.html', {'student_id': student_id, 'name': name})
-    elif request.method == 'POST':
-        # Call the capture_images function with student_id and name
-        capture_images(student_id, name)
-        main()
-        # Gọi hàm create_embeddings sau khi chụp ảnh
-        dataset_path = 'Face/5-celebrity-faces-dataset.npz'  # Thay bằng đường dẫn thực tế
-        output_path = 'Face/5-celebrity-faces-embeddings.npz'  # Thay bằng đường dẫn thực tế
-        create_embeddings(dataset_path, output_path)
-        # Render a success message
-        return HttpResponse("Images captured, saved, and embeddings created successfully.")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# register logout login
 def signup(request):
     if request.method == "POST":
         username = request.POST['username']
         fname = request.POST['fname']
-        role = request.POST['role']  # Thay đổi lấy dữ liệu từ trường role
+        role = request.POST['role']  
         email = request.POST['email']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
@@ -369,9 +246,9 @@ def signup(request):
         
         myuser = User.objects.create_user(username, email, pass1)
         myuser.first_name = fname
-        myuser.last_name = role  # Lưu giá trị chức vụ vào trường last_name
-        myuser.is_active = True  # Make sure the user is active
-        myuser.is_staff = True  # Set staff status to True
+        myuser.last_name = role  
+        myuser.is_active = True  
+        myuser.is_staff = True 
         myuser.save()
         messages.success(request, "Your Account has been created successfully!!")
         
@@ -396,49 +273,24 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'activation_failed.html')
 
-# def signin(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         role = request.POST['last_name']  # Thay thế lấy dữ liệu từ trường last_name
-        
-#         # Kiểm tra thông tin đăng nhập
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             if user.is_active and user.last_name == role:  # Sử dụng trường last_name để kiểm tra
-#                 login(request, user)
-#                 fname = user.first_name
-#                 messages.success(request, "Đăng nhập thành công!")
-#                 return redirect('home')
-#             else:
-#                 messages.error(request, "Tài khoản của bạn không hoạt động hoặc chức vụ không đúng.")
-#                 return redirect('signin')
-#         else:
-#             messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
-#             return redirect('signin')
-
-#     return render(request, "authentication/signin.html")
-
 def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        role = request.POST['last_name']  # Role from form data
+        role = request.POST['last_name']  
         
-        # Authenticate user
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            if user.is_active and user.last_name == role:  # Verify role from database
+            if user.is_active and user.last_name == role:  
                 login(request, user)
                 messages.success(request, "Đăng nhập thành công!")
                 
-                # Redirect based on role
+                request.session['username'] = user.first_name
+
                 if role == 'student':
                     return redirect('home')
                 elif role == 'teacher':
-                    # return redirect('demo')
                     return redirect('bostt')
-
                 else:
                     messages.error(request, "Chức vụ không hợp lệ.")
                     return redirect('signin')
@@ -458,68 +310,101 @@ def signout(request):
     messages.success(request, "Logged Out Successfully!!")
     return redirect('home')
 
-# Cài virtualenv
-# pip show virtualenv
-
-# Cài django
-# pip install django
-
-# Tạo admin
-# python .\manage.py createsuperuser
-
-# Chuyển cơ sở dữ liệu
-# python manage.py migrate
-
-# Chạy dự án
-# python .\manage.py runserver
-
-# Cài đặt mysql
-# pip install mysql
-
-# Cài đặt dlib
-# https://github.com/z-mahmud22/Dlib_Windows_Python3.x
-
-# Bản 3.12
-# python -m pip install dlib-19.24.99-cp312-cp312-win_amd64.whl
-
-# Cài đặt
-# pip install scikit-learn
 
 
+# def run_cap_picture(request):
+#     def capture_images(name, save_dir='Face/dataset'):
+#         train_dir = os.path.join(save_dir, 'train', name)
+#         val_dir = os.path.join(save_dir, 'val', name)
+#         os.makedirs(train_dir, exist_ok=True)
+#         os.makedirs(val_dir, exist_ok=True)
 
+#         cap = cv2.VideoCapture(0)
+#         detector = MTCNN()
+#         img_count = 0
+#         captured_images = []
 
+#         print("Press 'c' to capture image. Press 'q' to quit.")
+#         while img_count < 30:
+#             ret, frame = cap.read()
+#             if not ret:
+#                 break
+            
+#             cv2.imshow('Capturing Images', frame)
+#             key = cv2.waitKey(1)
+#             if key & 0xFF == ord('c'):
+#                 results = detector.detect_faces(frame)
+#                 if results:
+#                     x1, y1, width, height = results[0]['box']
+#                     x1, y1 = abs(x1), abs(y1)
+#                     x2, y2 = x1 + width, y1 + height
+#                     face = frame[y1:y2, x1:x2]
+#                     face = cv2.resize(face, (160, 160))
+#                     captured_images.append(face)
+#                     img_count += 1
+#                     print(f"Captured image {img_count}")
+#             elif key & 0xFF == ord('q'):
+#                 break
 
-
-
-
-
-
-# def signin(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         pass1 = request.POST['pass1']
+#         cap.release()
+#         cv2.destroyAllWindows()
         
-#         user = authenticate(request, username=username, password=pass1)
+#         if len(captured_images) == 0:
+#             print("No images captured.")
+#             return
+
+#         train_images, val_images = train_test_split(captured_images, test_size=0.33, random_state=42)
         
-#         if user is not None:
-#             if user.is_active:
-#                 login(request, user)
-#                 fname = user.first_name
-#                 # Truyền fname vào context
-#                 context = {
-#                     'fname': fname
-#                 }
-#                 messages.success(request, "Đăng nhập thành công!")
-#                 return render(request, 'authentication/index.html', context)  # Truyền context vào template khi render
-#             else:
-#                 messages.error(request, "Tài khoản của bạn không hoạt động. Vui lòng liên hệ admin.")
-#                 return redirect('signin')
-#         else:
-#             messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
-#             return redirect('signin')
+#         for i, img in enumerate(train_images):
+#             cv2.imwrite(os.path.join(train_dir, f'{name}_{i+1}.jpg'), img)
+#         for i, img in enumerate(val_images):
+#             cv2.imwrite(os.path.join(val_dir, f'{name}_{i+1}.jpg'), img)
+
+#     name = "dc"
+
+#     capture_images(name)
+#     return HttpResponse("Images captured and saved successfully.")
+
+
+
+
+# def capture_images_from_base64(images, student_id, name, save_dir='Face/dataset_split'):
+#     train_dir = os.path.join(save_dir, 'train', f'{student_id}_{name.replace(" ", "")}')
+#     val_dir = os.path.join(save_dir, 'val', f'{student_id}_{name.replace(" ", "")}')
+#     os.makedirs(train_dir, exist_ok=True)
+#     os.makedirs(val_dir, exist_ok=True)
+
+#     detector = MTCNN()
+#     captured_images = []
+
+#     for img_data in images:
+#         img_data = img_data.split(",")[1]
+#         img_array = np.frombuffer(base64.b64decode(img_data), np.uint8)
+#         frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+
+#         results = detector.detect_faces(frame)
+#         if results:
+#             x1, y1, width, height = results[0]['box']
+#             x1, y1 = abs(x1), abs(y1)
+#             x2, y2 = x1 + width, y1 + height
+#             face = frame[y1:y2, x1:x2]
+#             face = cv2.resize(face, (160, 160))
+#             captured_images.append(face)
+
+#     train_images, val_images = train_test_split(captured_images, test_size=0.33, random_state=42)
     
-#     return render(request, "authentication/signin.html")
+#     for i, img in enumerate(train_images):
+#         cv2.imwrite(os.path.join(train_dir, f'{student_id}_{name.replace(" ", "")}_{i+1}.jpg'), img)
+#     for i, img in enumerate(val_images):
+#         cv2.imwrite(os.path.join(val_dir, f'{student_id}_{name.replace(" ", "")}_{i+1}.jpg'), img)
 
+# def aa(request, student_id, name):
+#     if request.method == 'GET':
+#         return render(request, 'admin/capture_image.html', {'student_id': student_id, 'name': name})
+#     elif request.method == 'POST':
+#         images = request.POST.getlist('images[]')
+#         capture_images_from_base64(images, student_id, name)
+#         return HttpResponse("Images captured, saved, and embeddings created successfully.")
 
 
 

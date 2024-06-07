@@ -3,13 +3,23 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib import admin
 from .models import TblStudents
+from .models import Classroom
 
+# @admin.register(TblStudents)
+# class TblStudentsAdmin(admin.ModelAdmin):
+#     list_display = ('student_id', 'name', 'email', 'phone', 'dateBirth')
+#     search_fields = ('name', 'email', 'phone')
+#     list_filter = ('dateBirth',)
+
+# =====================================================
 @admin.register(TblStudents)
 class TblStudentsAdmin(admin.ModelAdmin):
-    list_display = ('student_id', 'name', 'email', 'phone', 'dateBirth')
+    list_display = ('student_id', 'name', 'email', 'phone', 'date_birth', 'classroom')
     search_fields = ('name', 'email', 'phone')
-    list_filter = ('dateBirth',)
+    list_filter = ('date_birth', 'classroom')
 
-# or alternatively you can use admin.site.register() method
-# admin.site.register(TblStudents, TblStudentsAdmin)
+@admin.register(Classroom)
+class ClassroomAdmin(admin.ModelAdmin):
+    list_display = ('class_id', 'class_name', 'teacher_name')
+    search_fields = ('class_name', 'teacher_name')
 

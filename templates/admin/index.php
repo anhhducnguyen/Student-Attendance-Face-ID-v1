@@ -7,8 +7,10 @@
  
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  {% load static %}
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="assets/css/Admin/admin/assets/plugins/fontawesome-free/css/all.min.css">
+  
+  <link rel="stylesheet" href="{% static 'assets/css/Admin/admin/assets/plugins/fontawesome-free/css/all.min.css' %}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
@@ -94,15 +96,15 @@
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Dashboard
+                Tổng quan
               </p>
             </a>
           </li>
           <li class="nav-item menu-open">
-            <a href="/nguoidung" class="nav-link ">
+            <a href="/classroom_list" class="nav-link ">
               <i class="nav-icon fas fa-user"></i>
               <p>
-                Users
+                Lớp học
               </p>
             </a>
           </li>
@@ -152,7 +154,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">Tổng quan</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -250,42 +252,22 @@
 </div>
 <!-- ./wrapper -->
 
-{% load static %}
-  <link rel="stylesheet" href="{}">
 
-<!-- jQuery -->
-<script src="% static 'assets/css/Admin/admin/assets/plugins/jquery/jquery.min.js' %"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="% static 'assets/css/Admin/admin/assets/plugins/jquery-ui/jquery-ui.min.js' %"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<!-- <script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script> -->
-<!-- Bootstrap 4 -->
+<!-- <script src="% static 'assets/css/Admin/admin/assets/plugins/jquery/jquery.min.js' %"></script> -->
+<!-- <script src="% static 'assets/css/Admin/admin/assets/plugins/jquery-ui/jquery-ui.min.js' %"></script>
 <script src="% static 'assets/css/Admin/admin/assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %"></script>
-<!-- ChartJS -->
 <script src="% static 'assets/css/Admin/admin/assets/plugins/chart.js/Chart.min.js' %"></script>
-<!-- Sparkline -->
 <script src="% static 'assets/css/Admin/admin/assets/plugins/sparklines/sparkline.js' %"></script>
-<!-- JQVMap -->
 <script src="% static 'assets/css/Admin/admin/assets/plugins/jqvmap/jquery.vmap.min.js' %"></script>
 <script src="% static 'assets/css/Admin/admin/assets/plugins/jqvmap/maps/jquery.vmap.usa.js' %"></script>
-<!-- jQuery Knob Chart -->
 <script src="% static 'assets/css/Admin/admin/assets/plugins/jquery-knob/jquery.knob.min.js' %"></script>
-<!-- daterangepicker -->
 <script src="% static 'assets/css/Admin/admin/assets/plugins/moment/moment.min.js' %"></script>
 <script src="assets/css/Admin/admin/assets/plugins/daterangepicker/daterangepicker.js' %"></script>
-<!-- Tempusdominus Bootstrap 4 -->
 <script src="% static 'assets/css/Admin/admin/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %"></script>
-<!-- Summernote -->
 <script src="% static 'assets/css/Admin/admin/assets/plugins/summernote/summernote-bs4.min.js' %"></script>
-<!-- overlayScrollbars -->
 <script src="% static 'assets/css/Admin/admin/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %"></script>
-<!-- AdminLTE App -->
 <script src="% static 'assets/css/Admin/admin/assets/js/adminlte.js' %"></script>
-<!-- AdminLTE for demo purposes -->
 <script src="% static 'assets/css/Admin/admin/assets/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="% static 'assets/css/Admin/admin/assets/js/pages/dashboard.js' %"></script>
+<script src="% static 'assets/css/Admin/admin/assets/js/pages/dashboard.js' %"></script> -->
 </body>
 </html>
