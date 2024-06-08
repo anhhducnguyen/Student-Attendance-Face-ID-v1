@@ -43,11 +43,6 @@ def bost2(request):
 def userthem(request):
     return render(request, "admin/nguoidung.php")
 
-# def demo(request):
-#     students = TblStudents.objects.all()
-#     return render(request, "fe/test.html", {'students': students})
-
-
 # Function to enhance image by applying denoising and smoothing
 def enhance_image(image):
     # Làm sạch nhiễu bằng Gaussian Blur
@@ -273,74 +268,6 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'activation_failed.html')
 
-# def signin(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         role = request.POST['last_name']  
-        
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             if user.is_active and user.last_name == role:  
-#                 login(request, user)
-                
-#                 messages.success(request, "Đăng nhập thành công!")
-                
-#                 request.session['username'] = user.first_name
-
-#                 if role == 'student':
-#                     return redirect('home')
-#                 elif role == 'teacher':
-#                     return redirect('bostt')
-#                 else:
-#                     messages.error(request, "Chức vụ không hợp lệ.")
-#                     return redirect('signin')
-#             else:
-#                 messages.error(request, "Tài khoản của bạn không hoạt động hoặc chức vụ không đúng.")
-#                 return redirect('signin')
-#         else:
-#             messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
-#             return redirect('signin')
-
-#     return render(request, "authentication/signin.html")
-
-from django.contrib.auth.models import User
-
-# def signin(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         role = request.POST['last_name']  
-
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             if user.is_active and user.last_name == role:
-#                 login(request, user)
-                
-#                 messages.success(request, "Đăng nhập thành công!")
-                
-#                 # Retrieve user's first name
-#                 user_obj = User.objects.get(username=username)
-#                 first_name = user_obj.first_name
-                
-#                 request.session['username'] = first_name
-
-#                 if role == 'student':
-#                     return redirect('home')
-#                 elif role == 'teacher':
-#                     return redirect('bostt')
-#                 else:
-#                     messages.error(request, "Chức vụ không hợp lệ.")
-#                     return redirect('signin')
-#             else:
-#                 messages.error(request, "Tài khoản của bạn không hoạt động hoặc chức vụ không đúng.")
-#                 return redirect('signin')
-#         else:
-#             messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
-#             return redirect('signin')
-
-#     return render(request, "authentication/signin.html")
-
 def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -360,108 +287,10 @@ def signin(request):
     
     return render(request, "authentication/signin.html")
 
-
-
 def signout(request):
     logout(request)
     messages.success(request, "Logged Out Successfully!!")
     return redirect('home')
-
-
-
-# def run_cap_picture(request):
-#     def capture_images(name, save_dir='Face/dataset'):
-#         train_dir = os.path.join(save_dir, 'train', name)
-#         val_dir = os.path.join(save_dir, 'val', name)
-#         os.makedirs(train_dir, exist_ok=True)
-#         os.makedirs(val_dir, exist_ok=True)
-
-#         cap = cv2.VideoCapture(0)
-#         detector = MTCNN()
-#         img_count = 0
-#         captured_images = []
-
-#         print("Press 'c' to capture image. Press 'q' to quit.")
-#         while img_count < 30:
-#             ret, frame = cap.read()
-#             if not ret:
-#                 break
-            
-#             cv2.imshow('Capturing Images', frame)
-#             key = cv2.waitKey(1)
-#             if key & 0xFF == ord('c'):
-#                 results = detector.detect_faces(frame)
-#                 if results:
-#                     x1, y1, width, height = results[0]['box']
-#                     x1, y1 = abs(x1), abs(y1)
-#                     x2, y2 = x1 + width, y1 + height
-#                     face = frame[y1:y2, x1:x2]
-#                     face = cv2.resize(face, (160, 160))
-#                     captured_images.append(face)
-#                     img_count += 1
-#                     print(f"Captured image {img_count}")
-#             elif key & 0xFF == ord('q'):
-#                 break
-
-#         cap.release()
-#         cv2.destroyAllWindows()
-        
-#         if len(captured_images) == 0:
-#             print("No images captured.")
-#             return
-
-#         train_images, val_images = train_test_split(captured_images, test_size=0.33, random_state=42)
-        
-#         for i, img in enumerate(train_images):
-#             cv2.imwrite(os.path.join(train_dir, f'{name}_{i+1}.jpg'), img)
-#         for i, img in enumerate(val_images):
-#             cv2.imwrite(os.path.join(val_dir, f'{name}_{i+1}.jpg'), img)
-
-#     name = "dc"
-
-#     capture_images(name)
-#     return HttpResponse("Images captured and saved successfully.")
-
-
-
-
-# def capture_images_from_base64(images, student_id, name, save_dir='Face/dataset_split'):
-#     train_dir = os.path.join(save_dir, 'train', f'{student_id}_{name.replace(" ", "")}')
-#     val_dir = os.path.join(save_dir, 'val', f'{student_id}_{name.replace(" ", "")}')
-#     os.makedirs(train_dir, exist_ok=True)
-#     os.makedirs(val_dir, exist_ok=True)
-
-#     detector = MTCNN()
-#     captured_images = []
-
-#     for img_data in images:
-#         img_data = img_data.split(",")[1]
-#         img_array = np.frombuffer(base64.b64decode(img_data), np.uint8)
-#         frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-
-#         results = detector.detect_faces(frame)
-#         if results:
-#             x1, y1, width, height = results[0]['box']
-#             x1, y1 = abs(x1), abs(y1)
-#             x2, y2 = x1 + width, y1 + height
-#             face = frame[y1:y2, x1:x2]
-#             face = cv2.resize(face, (160, 160))
-#             captured_images.append(face)
-
-#     train_images, val_images = train_test_split(captured_images, test_size=0.33, random_state=42)
-    
-#     for i, img in enumerate(train_images):
-#         cv2.imwrite(os.path.join(train_dir, f'{student_id}_{name.replace(" ", "")}_{i+1}.jpg'), img)
-#     for i, img in enumerate(val_images):
-#         cv2.imwrite(os.path.join(val_dir, f'{student_id}_{name.replace(" ", "")}_{i+1}.jpg'), img)
-
-# def aa(request, student_id, name):
-#     if request.method == 'GET':
-#         return render(request, 'admin/capture_image.html', {'student_id': student_id, 'name': name})
-#     elif request.method == 'POST':
-#         images = request.POST.getlist('images[]')
-#         capture_images_from_base64(images, student_id, name)
-#         return HttpResponse("Images captured, saved, and embeddings created successfully.")
 
 
 
