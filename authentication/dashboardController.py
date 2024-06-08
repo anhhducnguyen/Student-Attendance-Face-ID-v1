@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from sympy import Max
 from .models import Attendance, TblStudents, Classroom
 from django.http import JsonResponse
 from .models import TblStudents
@@ -212,6 +213,7 @@ def delete_student(request, student_id):
 #         'students': students,
 #         'total_students': total_students
 #     })
+
 def classroom_student_list(request, classroom_id):
     classroom = get_object_or_404(Classroom, id=classroom_id)
     students = TblStudents.objects.filter(classroom=classroom)
@@ -242,8 +244,39 @@ def classroom_student_list(request, classroom_id):
 # def student_list(request):
 #     return render(request, "attendance/attendance.html")
 
-def student_list(request):
-    students = TblStudents.objects.all()
-    attendance = Attendance.objects.filter(student__in=students)
+# def student_list(request):
+#     students = TblStudents.objects.all()
+#     attendance = Attendance.objects.filter(student__in=students)
 
-    return render(request, 'attendance/attendance.html', {'students': students, 'attendance': attendance})
+#     return render(request, 'attendance/attendance.html', {'students': students, 'attendance': attendance})
+from django.shortcuts import render
+from django.db.models import OuterRef, Subquery, Max
+
+def student_list(request):
+    # Lấy tất cả sinh viên
+    students = TblStudents.objects.all()
+
+    # Tạo subquery để lấy datetime mới nhất cho mỗi sinh viên
+    latest_attendance_subquery = Attendance.objects.filter(
+        student=OuterRef('pk')
+    ).order_by('-datetime').values('datetime')[:1]
+
+    # Annotate mỗi sinh viên với datetime điểm danh mới nhất
+    students_with_latest_attendance = students.annotate(
+        latest_attendance_datetime=Subquery(latest_attendance_subquery)
+    )
+
+    # Tạo danh sách để lưu các bản ghi điểm danh mới nhất
+    latest_attendance_list = []
+
+    # Lấy bản ghi điểm danh mới nhất cho mỗi sinh viên
+    for student in students_with_latest_attendance:
+        if student.latest_attendance_datetime:
+            latest_attendance = Attendance.objects.filter(
+                student=student,
+                datetime=student.latest_attendance_datetime
+            ).first()
+            if latest_attendance:
+                latest_attendance_list.append(latest_attendance)
+
+    return render(request, 'attendance/attendance.html', {'students': students, 'attendance': latest_attendance_list})

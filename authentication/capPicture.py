@@ -52,13 +52,14 @@ def capture_images(name, save_dir='E:/2ndSemester3rdYear/computer/hi/GFG---Djang
 
     print("Press 'c' to capture image. Press 'q' to quit.")
     while img_count < 10:
+        
         ret, frame = cap.read()
         if not ret:
             break
-        
+        frame = cv2.flip(frame, 1)
         # Display the frame
         cv2.imshow('Capturing Images', frame)
-        frame = cv2.flip(frame, 1)
+        
         
         # Check for key press
         key = cv2.waitKey(1)
