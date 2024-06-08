@@ -237,7 +237,7 @@
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
       <img src="{%static 'assets/images/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Hotel Manager</span>
+      <span class="brand-text font-weight-light">Teacher</span>
     </a>
 
     <!-- Sidebar -->
@@ -272,7 +272,7 @@
             </a>
           </li>
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link ">
+            <a href="/classroom_list_attendance" class="nav-link ">
               <i class="nav-icon fas fa-book"></i>
               <p>
                 Điểm danh
@@ -401,7 +401,7 @@
             <a href="{% url 'add_student' classroom.class_id %}"><button id="new3">Thêm sinh viên</button></a>
             <a href="{% url 'embeddings' %}"><button id="new3">Hoàn tất</button></a>
             <div class="search-container">
-                <form method="get" action="{% url 'classroom_student_list' classroom.class_id %}">
+                <form method="get" action="#">
                     <input type="text" name="q" placeholder="Search students..." value="{{ search_query }}">
                     <button type="submit">Tìm kiếm</button>
                 </form>

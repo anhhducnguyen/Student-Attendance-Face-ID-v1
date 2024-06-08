@@ -74,7 +74,7 @@
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
       <img src="{%static 'assets/images/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Hotel Manager</span>
+      <span class="brand-text font-weight-light">Teacher</span>
     </a>
 
     <!-- Sidebar -->
@@ -109,10 +109,10 @@
             </a>
           </li>
           <li class="nav-item menu-open">
-            <a href="/demo" class="nav-link ">
+            <a href="/classroom_list_attendance" class="nav-link ">
               <i class="nav-icon fas fa-book"></i>
               <p>
-                Posts
+                Điểm danh
               </p>
             </a>
           </li>
@@ -243,12 +243,12 @@
   </div>
 
   <!-- Footer -->
-  <footer class="main-footer">
+  <!-- <footer class="main-footer">
     <strong><a href="#">HotelManager</a></strong>
     <div class="float-right d-none d-sm-inline-block">
       <b>Thecappahotel@gmail.com</b>
     </div>
-  </footer>
+  </footer> -->
 </div>
 <!-- ./wrapper -->
 

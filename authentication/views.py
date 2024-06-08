@@ -273,34 +273,91 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'activation_failed.html')
 
+# def signin(request):
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         role = request.POST['last_name']  
+        
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             if user.is_active and user.last_name == role:  
+#                 login(request, user)
+                
+#                 messages.success(request, "Đăng nhập thành công!")
+                
+#                 request.session['username'] = user.first_name
+
+#                 if role == 'student':
+#                     return redirect('home')
+#                 elif role == 'teacher':
+#                     return redirect('bostt')
+#                 else:
+#                     messages.error(request, "Chức vụ không hợp lệ.")
+#                     return redirect('signin')
+#             else:
+#                 messages.error(request, "Tài khoản của bạn không hoạt động hoặc chức vụ không đúng.")
+#                 return redirect('signin')
+#         else:
+#             messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
+#             return redirect('signin')
+
+#     return render(request, "authentication/signin.html")
+
+from django.contrib.auth.models import User
+
+# def signin(request):
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         role = request.POST['last_name']  
+
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             if user.is_active and user.last_name == role:
+#                 login(request, user)
+                
+#                 messages.success(request, "Đăng nhập thành công!")
+                
+#                 # Retrieve user's first name
+#                 user_obj = User.objects.get(username=username)
+#                 first_name = user_obj.first_name
+                
+#                 request.session['username'] = first_name
+
+#                 if role == 'student':
+#                     return redirect('home')
+#                 elif role == 'teacher':
+#                     return redirect('bostt')
+#                 else:
+#                     messages.error(request, "Chức vụ không hợp lệ.")
+#                     return redirect('signin')
+#             else:
+#                 messages.error(request, "Tài khoản của bạn không hoạt động hoặc chức vụ không đúng.")
+#                 return redirect('signin')
+#         else:
+#             messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
+#             return redirect('signin')
+
+#     return render(request, "authentication/signin.html")
+
 def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
-        password = request.POST['password']
-        role = request.POST['last_name']  
+        pass1 = request.POST['pass1']
         
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(username=username, password=pass1)
+        
         if user is not None:
-            if user.is_active and user.last_name == role:  
-                login(request, user)
-                messages.success(request, "Đăng nhập thành công!")
-                
-                request.session['username'] = user.first_name
-
-                if role == 'student':
-                    return redirect('home')
-                elif role == 'teacher':
-                    return redirect('bostt')
-                else:
-                    messages.error(request, "Chức vụ không hợp lệ.")
-                    return redirect('signin')
-            else:
-                messages.error(request, "Tài khoản của bạn không hoạt động hoặc chức vụ không đúng.")
-                return redirect('signin')
+            login(request, user)
+            fname = user.first_name
+            messages.success(request, "Logged In Sucessfully!!")
+            # return render(request, "authentication/index.html",{"fname":fname})
+            return render(request, "authentication/index.html",{"fname":fname})
         else:
-            messages.error(request, "Tên đăng nhập hoặc mật khẩu không đúng.")
-            return redirect('signin')
-
+            messages.error(request, "Bad Credentials!!")
+            return redirect('home')
+    
     return render(request, "authentication/signin.html")
 
 

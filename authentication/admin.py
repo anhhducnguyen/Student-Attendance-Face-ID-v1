@@ -5,13 +5,6 @@ from django.contrib import admin
 from .models import TblStudents
 from .models import Classroom
 
-# @admin.register(TblStudents)
-# class TblStudentsAdmin(admin.ModelAdmin):
-#     list_display = ('student_id', 'name', 'email', 'phone', 'dateBirth')
-#     search_fields = ('name', 'email', 'phone')
-#     list_filter = ('dateBirth',)
-
-# =====================================================
 @admin.register(TblStudents)
 class TblStudentsAdmin(admin.ModelAdmin):
     list_display = ('student_id', 'name', 'email', 'phone', 'date_birth', 'classroom')

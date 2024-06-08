@@ -57,7 +57,7 @@ from . import train
 # ]
 
 urlpatterns = [
-    # path('', views.home, name='home'),
+    path('', views.home, name='home'),
     path('bostt', views.bost2, name='bostt'),
     path('nguoidung', views.userthem, name='nguoidung'),
     path('signup', views.signup, name='signup'),
@@ -77,6 +77,10 @@ urlpatterns = [
     path('classroom', views.classroom, name='classroom'),
     path('classroom/<int:class_id>/', dashboardController.classroom_student_list, name='classroom_student_list'),
     path('classroom/<int:class_id>/add_student/', dashboardController.add_student, name='add_student'),
+    path('classroom/<int:classroom_id>/', dashboardController.classroom_student_list, name='classroom_list_attendance'),
     # path('aa/<str:student_id>/<str:name>/', capPicture.aa, name='aa'),
-    path('', dashboardController.student_list, name='home'),
+    # path('student_list', dashboardController.student_list, name='student_list'),
+    path('classroom_list_attendance', dashboardController.classroom_list_attendance, name='classroom_list_attendance'),
+    path('student_list', dashboardController.student_list, name='student_list'),
 ]
+

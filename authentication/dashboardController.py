@@ -105,6 +105,10 @@ def classroom_list(request):
     classrooms = Classroom.objects.all()
     return render(request, 'class/classroom_list.html', {'classrooms': classrooms})
 
+def classroom_list_attendance(request):
+    classrooms = Classroom.objects.all()
+    return render(request, 'attendance/classroom_list.html', {'classrooms': classrooms})
+
 def classroom_detail(request, class_id):
     classroom = get_object_or_404(Classroom, pk=class_id)
     students = classroom.students.all()
@@ -198,6 +202,16 @@ def delete_student(request, student_id):
     return render(request, 'class/delete_student.html', {'student': student})
 
 
+# def classroom_student_list(request, classroom_id):
+#     classroom = get_object_or_404(Classroom, id=classroom_id)
+#     students = TblStudents.objects.filter(classroom=classroom)
+#     total_students = students.count()
+
+#     return render(request, 'class/classroom_detail.html', {
+#         'classroom': classroom,
+#         'students': students,
+#         'total_students': total_students
+#     })
 def classroom_student_list(request, classroom_id):
     classroom = get_object_or_404(Classroom, id=classroom_id)
     students = TblStudents.objects.filter(classroom=classroom)
@@ -209,6 +223,24 @@ def classroom_student_list(request, classroom_id):
         'total_students': total_students
     })
 
+
+# def student_list(request, classroom_id):
+#     classroom = get_object_or_404(Classroom, class_id=classroom_id)
+#     students = TblStudents.objects.filter(classroom=classroom)
+#     total_students = students.count()
+
+#     # Lấy thông tin điểm danh của từng sinh viên trong lớp
+#     attendance_records = Attendance.objects.filter(student__in=students)
+
+#     return render(request, 'attendance/attendance.html', {
+#         'classroom': classroom,
+#         'students': students,
+#         'total_students': total_students,
+#         'attendance_records': attendance_records
+#     })
+
+# def student_list(request):
+#     return render(request, "attendance/attendance.html")
 
 def student_list(request):
     students = TblStudents.objects.all()
