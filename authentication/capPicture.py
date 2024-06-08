@@ -94,9 +94,6 @@ def capture_images(name, save_dir='E:/2ndSemester3rdYear/computer/hi/GFG---Djang
     for i, img in enumerate(val_images):
         cv2.imwrite(os.path.join(val_dir, f'{name}_{i+1}.jpg'), img)
 
-
-
-
 def aa(request, student_id, name):
     if request.method == 'GET':
         return render(request, 'admin/capture_image.html', {'student_id': student_id, 'name': name})

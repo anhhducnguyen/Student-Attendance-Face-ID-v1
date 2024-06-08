@@ -14,7 +14,6 @@ import os
 from sklearn.model_selection import train_test_split
 from mtcnn.mtcnn import MTCNN
 from .models import TblStudents
-from Face.train import main
 from .x import get_embedding, create_embeddings
 from os import listdir
 from os.path import isdir
