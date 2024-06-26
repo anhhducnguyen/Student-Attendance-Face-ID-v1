@@ -32,6 +32,7 @@ Extracting facial features (O-Net)
 Main characteristics:
 
 **Classification:** Find the best hyperplane to classify divide the data into classes, maximizing the distance to these nearest data points (support vectors).
+
 **Kernel:** Use kernel functions to process data Linear, helps classify complex data.
 
 ## Training Process and Data
@@ -96,3 +97,5 @@ python .\manage.py createsuperuser
  ```bash
 python .\manage.py runserver
  ```
+
+
