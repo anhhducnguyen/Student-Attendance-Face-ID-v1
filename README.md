@@ -1,4 +1,4 @@
-#Main function
+# Main function
 ## Login and manage account:
 
 - Students and trainees can log in to the system with their personal accounts.
