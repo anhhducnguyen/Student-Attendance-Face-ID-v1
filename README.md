@@ -1,8 +1,5 @@
 # Student-Attendance-Face-ID
 
-## Main function
-
-
 **Classroom management:** Lecturers create and manage classes, add student lists to each class, update class schedules and notify students via the application.
 
 **Face Recognition:** The system uses cameras to take photos of students when entering class, the application analyzes and compares snapshots with archived data storage facilities to determine the user's identity.
