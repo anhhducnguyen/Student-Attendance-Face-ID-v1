@@ -97,6 +97,8 @@ python .\manage.py runserver
 
 ## Evaluate the model over time
 
+![Screenshot (835)](https://github.com/anhhducnguyen/report/assets/97099707/5c2b61f8-c468-411b-bf48-6cf8c8285ccf)
+
 
 ## <div align="left">Contact</div>
 
