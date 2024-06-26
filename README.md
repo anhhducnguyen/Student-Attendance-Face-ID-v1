@@ -1,38 +1,36 @@
-# GFG---Django-Login-System
+#Main function
+## Login and manage account:
 
-# Chức năng chính
-## Đăng nhập và quản lý tài khoản:
+- Students and trainees can log in to the system with their personal accounts.
+- Lecturers can manage class information, students and class schedules.
 
-- Sinh viên và giảng viên có thể đăng nhập vào hệ thống bằng tài khoản cá nhân.
-- Giảng viên có thể quản lý thông tin lớp học, sinh viên và lịch học.
+## Classroom management:
+- Lecturers create and manage classes, add student lists to each class.
+- Update class schedules and notify students via the application.
 
-## Quản lý lớp học:
-- Giảng viên tạo và quản lý các lớp học, thêm danh sách sinh viên vào từng lớp.
-- Cập nhật lịch học và thông báo cho sinh viên qua ứng dụng.
+## Face Recognition:
+- The system uses cameras to take photos of students when entering class.
+- The application analyzes and compares snapshots with archived data storage facilities to determine the user's identity.
 
-## Nhận diện khuôn mặt:
-- Hệ thống sử dụng camera để chụp ảnh sinh viên khi họ vào lớp.
-- Ứng dụng phân tích và so sánh khuôn mặt chụp được với cơ sở dữ liệu đã lưu trữ để xác định danh tính sinh viên.
+##Automatic points:
+- When successfully identified, the system will automatically update the user's identity status.
+- Lecturers can view attendance reports immediately.
 
-## Điểm danh tự động:
-- Khi nhận diện thành công, hệ thống tự động cập nhật trạng thái điểm danh của sinh viên.
-- Giảng viên có thể xem báo cáo điểm danh ngay lập tức.
+## Manage data points:
+- Attendance data storage and management system, helping students easily track and extract reports.
+- Provide statistics on student class participation.
 
-## Quản lý dữ liệu điểm danh:
-- Hệ thống lưu trữ và quản lý dữ liệu điểm danh, giúp giảng viên dễ dàng theo dõi và trích xuất báo cáo.
-- Cung cấp thống kê về tình hình tham gia lớp học của sinh viên.
+## Notifications and reminders:
+- Send notifications about class schedules and related changes to students.
+- Remind students about attendance if they forget.
 
-## Thông báo và nhắc nhở:
-- Gửi thông báo về lịch học và các thay đổi liên quan đến sinh viên.
-- Nhắc nhở sinh viên về việc điểm danh nếu họ quên.
-
-# Công nghệ sử dụng
-- Ngôn ngữ lập trình: Python, JavaScript, Html, Css
-- Framework web: Django (Python)
-- Cơ sở dữ liệu: MySQL
-- Thư viện nhận diện khuôn mặt: OpenCV, dlib
-- Triển khai: Docker, Kubernetes
-- Xác thực: JWT (JSON Web Token) hoặc OAuth2
+# Technology used
+- Language installer: Python, JavaScript, Html, Css
+- Web framework: Django (Python)
+- Database: MySQL
+- Library identification ID: OpenCV, dlib
+- Deployment: Docker, Kubernetes
+- Authentication: JWT (JSON Web Token) or OAuth2
 
 # Cài đặt
 - Cài virtualenv
@@ -46,7 +44,7 @@
 
 - Tạo admin
 ```bash
-python .\manage.py createsuperuse
+python .\manage.py createsuperuser
 ```
 
 - Chuyển cơ sở dữ liệu
@@ -75,4 +73,3 @@ python -m pip install dlib-19.24.99-cp312-cp312-win_amd64.whl
  ```bash
 pip install scikit-learn
  ```
->>>>>>> origin/main
