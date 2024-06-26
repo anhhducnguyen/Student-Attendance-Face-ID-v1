@@ -1,15 +1,48 @@
 # Student-Attendance-Face-ID
 
-# Main function
+## Main function
 
 
-**Classroom management** Lecturers create and manage classes, add student lists to each class, update class schedules and notify students via the application.
+**Classroom management:** Lecturers create and manage classes, add student lists to each class, update class schedules and notify students via the application.
 
-**Face Recognition** The system uses cameras to take photos of students when entering class, the application analyzes and compares snapshots with archived data storage facilities to determine the user's identity.
+**Face Recognition:** The system uses cameras to take photos of students when entering class, the application analyzes and compares snapshots with archived data storage facilities to determine the user's identity.
 
-**Automatic points** When successfully identified, the system will automatically update the user's identity status, lecturers can view attendance reports immediately.
+**Automatic points:** When successfully identified, the system will automatically update the user's identity status, lecturers can view attendance reports immediately.
 
-**Manage data points** Attendance data storage and management system, helping students easily track and extract reports, provide statistics on student class participation.
+**Manage data points:** Attendance data storage and management system, helping students easily track and extract reports, provide statistics on student class participation.
+
+## MTCNN architecture
+
+Face detection (P-Net)
+
+Estimation of facial landmark locations (R-Net)
+
+Extracting facial features (O-Net)
+
+## Facenet is used for the following tasks:
+
+**Face Recognition:** Determine the identity of a fish from a database of known faces.
+
+**Face Verification:** Verify viewing two photos whether the face belongs to the same person or not.
+
+**Face Clustering:** Group face photos together based on similarity, without prior knowledge of identity
+
+## SVM structure
+
+Main characteristics:
+
+**Classification:** Find the best hyperplane to classify divide the data into classes, maximizing the distance to these nearest data points (support vectors).
+**Kernel:** Use kernel functions to process data Linear, helps classify complex data.
+
+## Training Process and Data
+
+**Quantity:** 30 photos per label
+- 20 Train photos
+- 10 Val photos
+
+**Number of labels ( Class ):** Custom
+
+**Photo size:** 160x160px
 
 ## Student-Attendance-Face-ID Installation Instructions
 
