@@ -1,75 +1,65 @@
+# Student-Attendance-Face-ID
+
 # Main function
-## Login and manage account:
 
-- Students and trainees can log in to the system with their personal accounts.
-- Lecturers can manage class information, students and class schedules.
 
-## Classroom management:
-- Lecturers create and manage classes, add student lists to each class.
-- Update class schedules and notify students via the application.
+**Classroom management** Lecturers create and manage classes, add student lists to each class, update class schedules and notify students via the application.
 
-## Face Recognition:
-- The system uses cameras to take photos of students when entering class.
-- The application analyzes and compares snapshots with archived data storage facilities to determine the user's identity.
+**Face Recognition** The system uses cameras to take photos of students when entering class, the application analyzes and compares snapshots with archived data storage facilities to determine the user's identity.
 
-##Automatic points:
-- When successfully identified, the system will automatically update the user's identity status.
-- Lecturers can view attendance reports immediately.
+**Automatic points** When successfully identified, the system will automatically update the user's identity status, lecturers can view attendance reports immediately.
 
-## Manage data points:
-- Attendance data storage and management system, helping students easily track and extract reports.
-- Provide statistics on student class participation.
+**Manage data points** Attendance data storage and management system, helping students easily track and extract reports, provide statistics on student class participation.
 
-## Notifications and reminders:
-- Send notifications about class schedules and related changes to students.
-- Remind students about attendance if they forget.
+## Student-Attendance-Face-ID Installation Instructions
 
-# Technology used
-- Language installer: Python, JavaScript, Html, Css
-- Web framework: Django (Python)
-- Database: MySQL
-- Library identification ID: OpenCV, dlib
-- Deployment: Docker, Kubernetes
-- Authentication: JWT (JSON Web Token) or OAuth2
+### Prerequisites
+Before you begin, ensure you have the following software installed:
 
-# Cài đặt
-- Cài virtualenv
+1. [Python version 3.12](https://www.python.org/)
+   - Workload: `Python`
+2. [Xampp](https://www.apachefriends.org/download.html)
+   - Ensure `Xampp` is running and you have the necessary credentials.
+     
+3. Library identification ID: OpenCV, dlib
+   
+4. Basic knowledge about framework `Django` (Python), JavaScript, Html, Css, 
+  
+### Step-by-Step Installation Guide
+
+**Step 1.** Clone the Repository
+
+   First, clone the repository containing the application source code.
+
+   ```bash
+   git clone https://github.com/anhhducnguyen/faceRecognition
+   ```
+ 
+**Step 2.** Install virtualenv
  ```bash
  pip show virtualenv
  ```
-- Cài django
+
+**Step 3.** Install dlib (I got an error when trying to `pip install dlib`, if you get an error I recommend you visit the [dlib github](https://github.com/z-mahmud22/Dlib_Windows_Python3.x) so you can install it manually according to the instructions)
+
+**Step 4.** Install django, mysql
  ```bash
  pip install django
+pip install mysql
+pip install scikit-learn
  ```
 
-- Tạo admin
+**Step 5.** Transfer database
+```bash
+python manage.py migrate
+```
+
+**Step 6.** Create admin
 ```bash
 python .\manage.py createsuperuser
 ```
 
-- Chuyển cơ sở dữ liệu
-```bash
-python manage.py migrate
-```
-- Chạy dự án
+**Step 7.** Run the project
  ```bash
 python .\manage.py runserver
- ```
-
-- Cài đặt mysql
-```bash
-pip install mysql
-```
-- Cài đặt dlib
- ```bash
-https://github.com/z-mahmud22/Dlib_Windows_Python3.x
- ```
-
-- Bản python 3.12
-```bash
-python -m pip install dlib-19.24.99-cp312-cp312-win_amd64.whl
-```
-- Cài đặt
- ```bash
-pip install scikit-learn
  ```
