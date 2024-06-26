@@ -63,7 +63,7 @@ Before you begin, ensure you have the following software installed:
    First, clone the repository containing the application source code.
 
    ```bash
-   git clone https://github.com/anhhducnguyen/faceRecognition
+   git clone https://github.com/anhhducnguyen/Student-Attendance-Face-ID-v1
    ```
  
 **Step 2.** Install virtualenv
