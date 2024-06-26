@@ -52,7 +52,7 @@ Before you begin, ensure you have the following software installed:
 2. [Xampp](https://www.apachefriends.org/download.html)
    - Ensure `Xampp` is running and you have the necessary credentials.
      
-3. Library identification ID: OpenCV, dlib
+3. Library: OpenCV, dlib
    
 4. Basic knowledge about framework `Django` (Python), JavaScript, Html, Css, 
   
